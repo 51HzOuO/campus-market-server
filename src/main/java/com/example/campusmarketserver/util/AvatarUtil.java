@@ -5,11 +5,11 @@ package com.example.campusmarketserver.util;
  */
 public class AvatarUtil {
 
-    private static final String BASE_URL = "http://localhost:8080";
+    private static final String BASE_URL = "shturl.cc/6yhbRYwXpob6wFJvTlKwoHjGcaQ4rMBZ5pUjEIgwooqozFkz83DI40Ug";
 
     /**
      * 将相对路径转为完整 URL
-     * 例如 /avatars/xxx.jpeg → http://localhost:8080/avatars/xxx.jpeg
+     * 例如 /avatars/xxx.jpeg → shturl.cc/6yhbRYwXpob6wFJvTlKwoHjGcaQ4rMBZ5pUjEIgwooqozFkz83DI40Ug/avatars/xxx.jpeg
      */
     public static String fullUrl(String avatar) {
         if (avatar == null || avatar.isEmpty()) {

@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'https://shturl.cc/6yhbRYwXpob6wFJvTlKwoHjGcaQ4rMBZ5pUjEIgwooqozFkz83DI40Ug';
 
 /**
  * 封装 wx.request，自动携带 token

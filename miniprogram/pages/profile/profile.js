@@ -1,6 +1,6 @@
 const { request } = require('../../utils/request');
 
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'https://shturl.cc/6yhbRYwXpob6wFJvTlKwoHjGcaQ4rMBZ5pUjEIgwooqozFkz83DI40Ug';
 
 Page({
   data: {
