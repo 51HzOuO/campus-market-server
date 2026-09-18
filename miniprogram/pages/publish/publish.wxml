@@ -1,0 +1,92 @@
+<view class="page">
+
+  <!-- ========== 自定义导航栏 ========== -->
+  <view class="nav-bar" style="padding-top:{{statusBarHeight}}px">
+    <view class="nav-content">
+      <view class="nav-back" bindtap="goBack">
+        <text class="back-arrow">←</text>
+      </view>
+      <text class="nav-title">发布帖子</text>
+      <view class="nav-placeholder-right"></view>
+    </view>
+  </view>
+
+  <!-- 导航栏占位 -->
+  <view style="height:{{navBarTotalHeight}}px"></view>
+
+  <!-- ========== 模块选择 ========== -->
+  <view class="section">
+    <view class="section-label">选择模块</view>
+    <view class="module-row">
+      <view
+        class="module-btn {{selectedModule === index ? 'selected' : ''}}"
+        wx:for="{{modules}}"
+        wx:key="index"
+        data-index="{{index}}"
+        bindtap="selectModule"
+      >{{item}}</view>
+    </view>
+  </view>
+
+  <!-- ========== 标题输入 ========== -->
+  <view class="section">
+    <input
+      class="title-input"
+      placeholder="请输入标题"
+      placeholder-class="placeholder"
+      maxlength="50"
+      value="{{title}}"
+      bindinput="onTitleInput"
+    />
+  </view>
+
+  <!-- ========== 内容输入 ========== -->
+  <view class="section">
+    <textarea
+      class="content-input"
+      placeholder="分享你的校园生活..."
+      placeholder-class="placeholder"
+      maxlength="2000"
+      value="{{content}}"
+      bindinput="onContentInput"
+      auto-height
+    />
+    <view class="word-count {{content.length < 10 ? 'warn' : ''}}">
+      {{content.length}}/2000，最少10字
+    </view>
+  </view>
+
+  <!-- ========== 图片上传 ========== -->
+  <view class="section">
+    <view class="section-label">图片（最多9张）</view>
+    <view class="image-grid">
+      <view class="image-item" wx:for="{{images}}" wx:key="index">
+        <image class="preview-img" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-index="{{index}}"/>
+        <view class="image-delete" catchtap="deleteImage" data-index="{{index}}">×</view>
+      </view>
+      <view class="image-add" wx:if="{{images.length < 9}}" bindtap="chooseImage">
+        <text class="add-icon">+</text>
+        <text class="add-text">{{images.length}}/9</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ========== 底部提示 ========== -->
+  <view class="footer-tip">
+    发布即表示同意
+    <text class="link" bindtap="goAgreement">用户协议</text>
+    和
+    <text class="link" bindtap="goDisclaimer">社区规范</text>
+  </view>
+
+  <!-- 底部占位，防止内容被固定按钮遮挡 -->
+  <view style="height:120rpx"></view>
+
+  <!-- ========== 底部固定发布按钮 ========== -->
+  <view class="bottom-bar">
+    <view class="bottom-btn {{canPublish ? 'active' : ''}}" bindtap="submitPost">
+      发布
+    </view>
+  </view>
+
+</view>

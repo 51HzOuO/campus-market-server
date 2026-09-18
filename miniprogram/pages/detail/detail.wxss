@@ -1,0 +1,408 @@
+.page {
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* ========== 自定义导航栏 ========== */
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: #fff;
+  border-bottom: 1rpx solid #eee;
+}
+
+.nav-content {
+  display: flex;
+  align-items: center;
+  height: 88rpx;
+  padding: 0 24rpx;
+}
+
+.nav-back {
+  flex-shrink: 0;
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-arrow {
+  font-size: 36rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.nav-title {
+  flex: 1;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #222;
+}
+
+.nav-placeholder {
+  flex-shrink: 0;
+  width: 60rpx;
+}
+
+/* ========== 帖子内容区 ========== */
+.post-section {
+  background: #fff;
+  padding: 28rpx 24rpx;
+}
+
+.post-header {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 24rpx;
+}
+
+.post-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-right: 16rpx;
+  background: #e8e8e8;
+}
+
+.post-user {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.post-nickname {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #222;
+  margin-right: 12rpx;
+}
+
+.activity-badge {
+  font-size: 20rpx;
+  border-radius: 4rpx;
+  padding: 2rpx 10rpx;
+  line-height: 1.5;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+}
+
+.post-time {
+  font-size: 22rpx;
+  color: #bbb;
+  margin-right: 16rpx;
+}
+
+.module-tag {
+  font-size: 20rpx;
+  color: #4A90D9;
+  background: #e8f0fe;
+  border-radius: 4rpx;
+  padding: 2rpx 10rpx;
+}
+
+/* ========== 标题 + 正文 ========== */
+.post-body {
+  margin-bottom: 24rpx;
+}
+
+.post-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #222;
+  display: block;
+  margin-bottom: 16rpx;
+  line-height: 1.4;
+}
+
+.post-content {
+  font-size: 28rpx;
+  color: #444;
+  line-height: 1.8;
+  word-break: break-all;
+}
+
+/* ========== 图片九宫格 ========== */
+.image-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-bottom: 24rpx;
+}
+
+.grid-image {
+  width: 210rpx;
+  height: 210rpx;
+  border-radius: 8rpx;
+  background: #e8e8e8;
+}
+
+/* ========== 统计行 ========== */
+.stats-row {
+  display: flex;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.stat-item {
+  font-size: 24rpx;
+  color: #999;
+  margin-right: 32rpx;
+}
+
+.report-text-btn {
+  font-size: 24rpx;
+  color: #ff6b6b;
+  margin-left: auto;
+}
+
+/* ========== 分割线 ========== */
+.divider {
+  height: 16rpx;
+}
+
+/* ========== 评论列表 ========== */
+.comment-section {
+  background: #fff;
+  padding: 0 24rpx;
+}
+
+.comment-header {
+  padding: 24rpx 0 16rpx;
+}
+
+.comment-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #222;
+}
+
+.comment-list {
+  padding-bottom: 20rpx;
+}
+
+.comment-item {
+  display: flex;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.comment-item:last-child {
+  border-bottom: none;
+}
+
+.comment-avatar {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-right: 16rpx;
+  background: #e8e8e8;
+}
+
+.comment-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-user-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8rpx;
+}
+
+.comment-nickname {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #555;
+}
+
+.comment-time {
+  font-size: 22rpx;
+  color: #ccc;
+}
+
+.comment-content {
+  font-size: 26rpx;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 8rpx;
+}
+
+.comment-actions {
+  display: flex;
+}
+
+.comment-reply {
+  font-size: 22rpx;
+  color: #4A90D9;
+  padding: 4rpx 0;
+}
+
+.comment-empty {
+  text-align: center;
+  padding: 60rpx 0;
+  color: #ccc;
+  font-size: 26rpx;
+}
+
+/* ========== 底部操作栏 ========== */
+.bottom-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  height: 100rpx;
+  padding: 0 24rpx;
+  padding-bottom: env(safe-area-inset-bottom);
+  border-top: 1rpx solid #eee;
+}
+
+.like-btn {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-right: 16rpx;
+  padding: 8rpx 16rpx;
+  border-radius: 28rpx;
+  background: #f5f5f5;
+}
+
+.like-btn.liked {
+  background: #fff0f0;
+}
+
+.like-icon {
+  font-size: 28rpx;
+  margin-right: 6rpx;
+}
+
+.like-num {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.comment-input-wrap {
+  flex: 1;
+  height: 64rpx;
+  background: #f5f5f5;
+  border-radius: 32rpx;
+  display: flex;
+  align-items: center;
+  padding: 0 24rpx;
+  margin-right: 16rpx;
+}
+
+.comment-input {
+  width: 100%;
+  font-size: 26rpx;
+  color: #333;
+}
+
+.send-btn {
+  flex-shrink: 0;
+  font-size: 28rpx;
+  color: #bbb;
+  padding: 8rpx 20rpx;
+}
+
+.send-btn.active {
+  color: #2DBE9A;
+  font-weight: 500;
+}
+
+/* ========== 举报弹窗 ========== */
+.report-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.report-dialog {
+  width: 560rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 40rpx;
+}
+
+.report-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #222;
+  text-align: center;
+  display: block;
+  margin-bottom: 32rpx;
+}
+
+.report-option {
+  font-size: 28rpx;
+  color: #444;
+  padding: 24rpx 20rpx;
+  border: 2rpx solid #e8e8e8;
+  border-radius: 8rpx;
+  margin-bottom: 16rpx;
+  text-align: center;
+}
+
+.report-option.selected {
+  border-color: #2DBE9A;
+  color: #2DBE9A;
+  background: #f0faf6;
+}
+
+.report-btns {
+  display: flex;
+  margin-top: 32rpx;
+  gap: 20rpx;
+}
+
+.report-cancel {
+  flex: 1;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  color: #666;
+  background: #f5f5f5;
+  border-radius: 8rpx;
+}
+
+.report-confirm {
+  flex: 1;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  color: #fff;
+  background: #ff6b6b;
+  border-radius: 8rpx;
+}

@@ -1,0 +1,106 @@
+<view class="page">
+  <!-- 导航栏 -->
+  <view class="nav-bar" style="padding-top:{{statusBarHeight}}px">
+    <view class="nav-content">
+      <view class="nav-back" bindtap="goBack">
+        <text class="back-arrow">←</text>
+      </view>
+      <text class="nav-title">帖子详情</text>
+      <view class="nav-placeholder"></view>
+    </view>
+  </view>
+  <view style="height:{{navBarTotalHeight}}px"></view>
+
+  <!-- 帖子内容区 -->
+  <view class="post-section" wx:if="{{post}}">
+    <view class="post-header">
+      <image class="post-avatar" src="{{post.avatar || '/images/default-avatar.png'}}" mode="aspectFill"/>
+      <view class="post-user">
+        <view class="user-row">
+          <text class="post-nickname">{{post.nickname || '匿名用户'}}</text>
+          <view class="activity-badge" style="background:{{post.activityColor || '#999'}}20;color:{{post.activityColor || '#999'}}">
+            {{post.activityLevel || '新手上路'}}
+          </view>
+        </view>
+        <view class="meta-row">
+          <text class="post-time">{{post.timeAgo}}</text>
+          <text class="module-tag">{{moduleLabels[post.module] || ''}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="post-body">
+      <text class="post-title" wx:if="{{post.title}}">{{post.title}}</text>
+      <text class="post-content">{{post.content}}</text>
+    </view>
+
+    <view class="image-grid" wx:if="{{imageList.length > 0}}">
+      <image class="grid-image" wx:for="{{imageList}}" wx:key="index" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-index="{{index}}"/>
+    </view>
+
+    <view class="stats-row">
+      <text class="stat-item">{{post.viewCount || 0}} 浏览</text>
+      <text class="stat-item">{{post.likeCount || 0}} 点赞</text>
+      <text class="stat-item">{{post.commentCount || 0}} 评论</text>
+      <text class="report-text-btn" bindtap="showReportDialog">举报</text>
+    </view>
+  </view>
+
+  <view class="divider"></view>
+
+  <!-- 评论列表 -->
+  <view class="comment-section">
+    <view class="comment-header">
+      <text class="comment-title">评论 ({{post.commentCount || 0}})</text>
+    </view>
+
+    <view class="comment-list" wx:if="{{comments.length > 0}}">
+      <view class="comment-item" wx:for="{{comments}}" wx:key="id">
+        <image class="comment-avatar" src="{{item.avatar || '/images/default-avatar.png'}}" mode="aspectFill"/>
+        <view class="comment-body">
+          <view class="comment-user-row">
+            <text class="comment-nickname">{{item.nickname || '匿名用户'}}</text>
+            <text class="comment-time">{{item.timeAgo}}</text>
+          </view>
+          <text class="comment-content">{{item.content}}</text>
+          <view class="comment-actions">
+            <text class="comment-reply" catchtap="replyComment" data-id="{{item.id}}" data-user="{{item.nickname}}">回复</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="comment-empty" wx:if="{{comments.length === 0 && !loadingComments}}">
+      <text>暂无评论，快来抢沙发吧~</text>
+    </view>
+  </view>
+
+  <view style="height:140rpx"></view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <view class="like-btn {{liked ? 'liked' : ''}}" bindtap="toggleLike">
+      <text class="like-icon">{{liked ? '❤️' : '🤍'}}</text>
+      <text class="like-num">{{post.likeCount || 0}}</text>
+    </view>
+    <view class="comment-input-wrap">
+      <input class="comment-input" placeholder="{{replyTo ? '回复 ' + replyTo + '：' : '说点什么...'}}" value="{{commentText}}" bindinput="onCommentInput" confirm-type="send" bindconfirm="submitComment"/>
+    </view>
+    <view class="send-btn {{commentText.length > 0 ? 'active' : ''}}" bindtap="submitComment">发送</view>
+  </view>
+
+  <!-- 举报弹窗 -->
+  <view class="report-mask" wx:if="{{showReport}}" catchtap="hideReportDialog">
+    <view class="report-dialog" catchtap="stopEvent">
+      <text class="report-title">举报原因</text>
+      <view class="report-option {{reportReason === '违规广告' ? 'selected' : ''}}" catchtap="selectReason" data-reason="违规广告">违规广告</view>
+      <view class="report-option {{reportReason === '垃圾信息' ? 'selected' : ''}}" catchtap="selectReason" data-reason="垃圾信息">垃圾信息</view>
+      <view class="report-option {{reportReason === '不当内容' ? 'selected' : ''}}" catchtap="selectReason" data-reason="不当内容">不当内容</view>
+      <view class="report-option {{reportReason === '其他' ? 'selected' : ''}}" catchtap="selectReason" data-reason="其他">其他</view>
+      <view class="report-btns">
+        <view class="report-cancel" catchtap="hideReportDialog">取消</view>
+        <view class="report-confirm" catchtap="submitReport">确认举报</view>
+      </view>
+    </view>
+  </view>
+</view>

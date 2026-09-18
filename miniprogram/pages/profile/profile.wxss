@@ -1,0 +1,190 @@
+.page {
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* 导航栏 */
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: #fff;
+  border-bottom: 1rpx solid #eee;
+}
+
+.nav-content {
+  display: flex;
+  align-items: center;
+  height: 88rpx;
+  padding: 0 24rpx;
+}
+
+.nav-back {
+  flex-shrink: 0;
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-arrow {
+  font-size: 36rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.nav-title {
+  flex: 1;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #222;
+}
+
+.nav-placeholder {
+  flex-shrink: 0;
+  width: 60rpx;
+}
+
+/* 头像区域 */
+.avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48rpx 0 32rpx;
+  background: #fff;
+}
+
+.avatar {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  margin-bottom: 16rpx;
+}
+
+.avatar-tip {
+  font-size: 22rpx;
+  color: #07C160;
+}
+
+/* 信息卡片 */
+.info-card {
+  background: #fff;
+  margin: 20rpx 24rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28rpx 24rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-row.editable {
+  cursor: pointer;
+}
+
+.info-label {
+  font-size: 28rpx;
+  color: #888;
+  flex-shrink: 0;
+}
+
+.info-value-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.info-value {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.arrow {
+  font-size: 32rpx;
+  color: #ccc;
+  margin-left: 4rpx;
+}
+
+/* 昵称/学号编辑 */
+.inline-input {
+  font-size: 28rpx;
+  color: #333;
+  border-bottom: 2rpx solid #07C160;
+  padding: 4rpx 8rpx;
+  width: 200rpx;
+  text-align: right;
+}
+
+.save-btn {
+  font-size: 26rpx;
+  color: #07C160;
+  font-weight: 500;
+  padding: 4rpx 12rpx;
+}
+
+/* 活跃度标签 */
+.activity-badge {
+  font-size: 22rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 20rpx;
+  font-weight: 500;
+}
+
+.activity-score {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 等级说明 */
+.level-guide {
+  background: #fff;
+  margin: 0 24rpx 40rpx;
+  border-radius: 16rpx;
+  padding: 28rpx 24rpx;
+}
+
+.guide-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.guide-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14rpx;
+}
+
+.guide-dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+
+.guide-text {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.guide-tips {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 16rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid #f5f5f5;
+}

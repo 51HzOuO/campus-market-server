@@ -1,0 +1,50 @@
+<view class="page">
+
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar" style="padding-top:{{statusBarHeight}}px">
+    <view class="nav-content">
+      <view class="nav-back" bindtap="goBack">
+        <text class="back-arrow">←</text>
+      </view>
+      <text class="nav-title">用户协议</text>
+      <view class="nav-placeholder"></view>
+    </view>
+  </view>
+  <view style="height:{{navBarTotalHeight}}px"></view>
+
+  <!-- 协议内容 -->
+  <view class="content">
+    <view class="title">校园集市用户协议</view>
+    <view class="update-time">更新日期：2025年9月1日</view>
+
+    <view class="section">
+      <view class="section-title">一、服务说明</view>
+      <view class="section-content">校园集市是一个为在校师生提供二手交易、跑腿代办、信息分享等服务的校园平台。本平台仅提供信息展示与撮合服务，不参与实际交易过程。</view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">二、用户注册与账号安全</view>
+      <view class="section-content">1. 用户需使用真实有效的学校身份信息进行注册。\n2. 用户应妥善保管账号信息，因账号泄露导致的损失由用户自行承担。\n3. 禁止将账号转让、出借或出售给他人。</view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">三、用户行为规范</view>
+      <view class="section-content">1. 发布的信息必须真实、合法，不得发布虚假或违规内容。\n2. 不得利用平台进行欺诈、骚扰、侵权等违法行为。\n3. 交易过程中应诚信守约，不得恶意违约或虚假交易。\n4. 尊重他人隐私，不得泄露他人个人信息。</view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">四、知识产权</view>
+      <view class="section-content">1. 用户在平台发布的内容，授权平台在校园范围内展示和传播。\n2. 平台的所有权及知识产权归开发团队所有。</view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">五、免责声明</view>
+      <view class="section-content">1. 平台不对用户之间的交易承担担保责任，交易风险由用户自行承担。\n2. 因不可抗力导致的服务中断，平台不承担责任。\n3. 平台有权对违规内容进行处理，包括但不限于删除、屏蔽。</view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">六、协议修改</view>
+      <view class="section-content">平台有权根据需要修改本协议内容，修改后的协议将在平台公布。用户继续使用平台即视为接受修改后的协议。</view>
+    </view>
+  </view>
+</view>

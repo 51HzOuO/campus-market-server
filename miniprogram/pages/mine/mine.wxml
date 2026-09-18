@@ -1,0 +1,38 @@
+<view class="page">
+
+  <!-- 顶部用户信息 -->
+  <view class="user-header">
+    <image class="user-avatar" src="{{userInfo.avatar || '/images/default-avatar.png'}}" mode="aspectFill"/>
+    <view class="user-info">
+      <view class="user-name-row">
+        <text class="user-name">{{userInfo.nickname || '未登录'}}</text>
+        <view class="role-badge" style="background:{{userInfo.activityColor || '#999999'}}20;color:{{userInfo.activityColor || '#999999'}}" wx:if="{{userInfo.activityLevel}}">
+          {{userInfo.activityLevel}}
+        </view>
+      </view>
+      <text class="user-id" wx:if="{{userInfo.studentNo}}">学号：{{userInfo.studentNo}}</text>
+    </view>
+  </view>
+
+  <!-- 管理入口 -->
+  <view class="menu-list" wx:if="{{adminMenu}}">
+    <view class="menu-item admin-item" bindtap="onAdminTap">
+      <text class="menu-label">{{adminMenu.label}}</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 功能列表 -->
+  <view class="menu-list">
+    <view class="menu-item" wx:for="{{menuItems}}" wx:key="label" bindtap="onMenuTap" data-index="{{index}}">
+      <text class="menu-label">{{item.label}}</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="logout-btn" bindtap="logout">
+    <text>退出登录</text>
+  </view>
+
+</view>

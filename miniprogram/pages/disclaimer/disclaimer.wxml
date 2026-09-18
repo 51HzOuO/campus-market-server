@@ -1,0 +1,50 @@
+<view class="page">
+
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar" style="padding-top:{{statusBarHeight}}px">
+    <view class="nav-content">
+      <view class="nav-back" bindtap="goBack">
+        <text class="back-arrow">←</text>
+      </view>
+      <text class="nav-title">免责声明</text>
+      <view class="nav-placeholder"></view>
+    </view>
+  </view>
+  <view style="height:{{navBarTotalHeight}}px"></view>
+
+  <!-- 声明内容 -->
+  <view class="content">
+    <view class="title">免责声明</view>
+    <view class="update-time">更新日期：2025年9月1日</view>
+
+    <view class="section">
+      <view class="section-title">一、平台性质</view>
+      <view class="section-content">校园集市仅作为信息展示与撮合平台，不参与用户之间的实际交易行为。所有交易均由用户自行协商完成，平台不对交易结果承担任何责任。</view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">二、信息真实性</view>
+      <view class="section-content">1. 平台上发布的信息由用户自行发布，平台无法保证所有信息的真实性和准确性。\n2. 用户在进行交易前，应自行核实对方身份及商品信息。\n3. 因信息不实导致的损失，平台不承担赔偿责任。</view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">三、交易风险</view>
+      <view class="section-content">1. 用户之间的交易行为存在风险，包括但不限于商品质量、付款安全、物流配送等。\n2. 建议用户选择当面交易，并在公共场所进行。\n3. 平台不建议用户进行预付款或转账交易。</view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">四、内容管理</view>
+      <view class="section-content">1. 平台有权对违规内容进行删除或屏蔽处理。\n2. 用户发现违规内容可向平台举报，平台将及时处理。\n3. 平台对用户发布的内容不承担审核义务。</view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">五、服务中断</view>
+      <view class="section-content">1. 因系统维护、升级或不可抗力导致的服务中断，平台不承担责任。\n2. 平台将尽力保障服务的稳定性和连续性。</view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">六、其他</view>
+      <view class="section-content">本声明的最终解释权归校园集市开发团队所有。如有争议，双方应友好协商解决。</view>
+    </view>
+  </view>
+</view>

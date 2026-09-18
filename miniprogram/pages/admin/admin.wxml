@@ -1,0 +1,80 @@
+<view class="page">
+
+  <!-- 导航栏 -->
+  <view class="nav-bar" style="padding-top:{{statusBarHeight}}px">
+    <view class="nav-content">
+      <view class="nav-back" bindtap="goBack">
+        <text class="back-arrow">←</text>
+      </view>
+      <text class="nav-title">管理后台</text>
+      <view class="nav-placeholder"></view>
+    </view>
+  </view>
+  <view style="height:{{navBarTotalHeight}}px"></view>
+
+  <!-- Tab 栏 -->
+  <view class="tab-bar">
+    <view class="tab-item {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-tab="0">数据统计</view>
+    <view class="tab-item {{currentTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-tab="1">用户管理</view>
+    <view class="tab-item {{currentTab === 2 ? 'active' : ''}}" bindtap="switchTab" data-tab="2">帖子管理</view>
+  </view>
+
+  <!-- 数据统计 -->
+  <view class="stats-section" wx:if="{{currentTab === 0}}">
+    <view class="stat-card">
+      <text class="stat-num">{{stats.totalUsers || 0}}</text>
+      <text class="stat-label">总用户数</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-num">{{stats.totalPosts || 0}}</text>
+      <text class="stat-label">总帖子数</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-num">{{stats.todayUsers || 0}}</text>
+      <text class="stat-label">今日新增用户</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-num">{{stats.todayPosts || 0}}</text>
+      <text class="stat-label">今日新增帖子</text>
+    </view>
+  </view>
+
+  <!-- 用户管理 -->
+  <view class="list-section" wx:if="{{currentTab === 1}}">
+    <view class="user-item" wx:for="{{users}}" wx:key="id" wx:for-index="idx">
+      <image class="user-avatar" src="{{item.avatar || '/images/default-avatar.png'}}" mode="aspectFill"/>
+      <view class="user-info">
+        <text class="user-name">{{item.nickname || '匿名用户'}}</text>
+        <text class="user-meta">角色: {{item.role === 1 ? '管理员' : item.role === 2 ? '审核员' : '普通用户'}} | 状态: {{item.status === 0 ? '正常' : '已封禁'}}</text>
+      </view>
+      <view class="user-action">
+        <view class="btn-ban {{item.status === 0 ? 'ban' : 'unban'}}" bindtap="banUser" data-id="{{item.id}}" data-idx="{{idx}}">
+          {{item.status === 0 ? '封禁' : '解封'}}
+        </view>
+      </view>
+    </view>
+    <view class="loading-more" wx:if="{{loading}}">加载中...</view>
+    <view class="loading-more" wx:if="{{noMore && users.length > 0}}">— 没有更多了 —</view>
+    <view class="empty" wx:if="{{!loading && users.length === 0}}">暂无用户</view>
+  </view>
+
+  <!-- 帖子管理 -->
+  <view class="list-section" wx:if="{{currentTab === 2}}">
+    <view class="post-item" wx:for="{{posts}}" wx:key="id" wx:for-index="idx">
+      <view class="post-info">
+        <text class="post-title">{{item.title || '无标题'}}</text>
+        <text class="post-meta">{{item.nickname}} | {{item.isTop === 1 ? '已置顶' : '普通'}}</text>
+      </view>
+      <view class="post-actions">
+        <view class="btn-top {{item.isTop === 1 ? 'active' : ''}}" bindtap="topPost" data-id="{{item.id}}" data-idx="{{idx}}">
+          {{item.isTop === 1 ? '取消置顶' : '置顶'}}
+        </view>
+        <view class="btn-delete" bindtap="deletePost" data-id="{{item.id}}" data-idx="{{idx}}">删除</view>
+      </view>
+    </view>
+    <view class="loading-more" wx:if="{{loading}}">加载中...</view>
+    <view class="loading-more" wx:if="{{noMore && posts.length > 0}}">— 没有更多了 —</view>
+    <view class="empty" wx:if="{{!loading && posts.length === 0}}">暂无帖子</view>
+  </view>
+
+</view>

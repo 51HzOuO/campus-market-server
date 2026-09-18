@@ -1,0 +1,47 @@
+<view class="page">
+
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar" style="padding-top:{{statusBarHeight}}px">
+    <view class="nav-content">
+      <view class="nav-back" bindtap="goBack">
+        <text class="back-arrow">←</text>
+      </view>
+      <text class="nav-title">我的点赞</text>
+      <view class="nav-placeholder"></view>
+    </view>
+  </view>
+  <view style="height:{{navBarTotalHeight}}px"></view>
+
+  <!-- 帖子列表 -->
+  <view class="post-list" wx:if="{{posts.length > 0}}">
+    <view class="post-item" wx:for="{{posts}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="post-header">
+        <image class="post-avatar" src="{{item.avatar || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+        <view class="post-user-info">
+          <text class="post-nickname">{{item.nickname || '匿名用户'}}</text>
+          <text class="post-time">{{item.timeAgo}}</text>
+        </view>
+      </view>
+      <view class="post-title">{{item.title}}</view>
+      <view class="post-content">{{item.content}}</view>
+      <view class="post-footer">
+        <view class="post-stats">
+          <text class="stat-item liked">❤ {{item.likeCount || 0}}</text>
+          <text class="stat-item">💬 {{item.commentCount || 0}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{!loading && posts.length === 0}}">
+    <text class="empty-icon">❤️</text>
+    <text class="empty-text">还没有点赞过帖子</text>
+    <view class="empty-btn" bindtap="goHome">去逛逛</view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+</view>

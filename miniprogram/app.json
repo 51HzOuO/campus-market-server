@@ -1,0 +1,45 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/message/message",
+    "pages/mine/mine",
+    "pages/publish/publish",
+    "pages/detail/detail",
+    "pages/agreement/agreement",
+    "pages/disclaimer/disclaimer",
+    "pages/about/about",
+    "pages/my-posts/my-posts",
+    "pages/my-likes/my-likes",
+    "pages/profile/profile",
+    "pages/search/search",
+    "pages/admin/admin",
+    "pages/audit/audit"
+  ],
+  "window": {
+    "navigationBarTitleText": "校园集市",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f5f5"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#07C160",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "集市"
+      },
+      {
+        "pagePath": "pages/message/message",
+        "text": "消息"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

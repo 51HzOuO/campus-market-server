@@ -1,0 +1,105 @@
+.page {
+  background: #f5f5f5;
+  min-height: 100vh;
+  padding-bottom: 40rpx;
+}
+
+/* ========== 顶部用户信息 ========== */
+.user-header {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 40rpx 24rpx 36rpx;
+  margin-bottom: 16rpx;
+}
+
+.user-avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-right: 24rpx;
+  background: #e8e8e8;
+}
+
+.user-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.user-name {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #222;
+  margin-right: 12rpx;
+}
+
+.role-badge {
+  font-size: 22rpx;
+  color: #4A90D9;
+  background: #e8f0fe;
+  border-radius: 4rpx;
+  padding: 2rpx 12rpx;
+  line-height: 1.5;
+}
+
+.user-id {
+  font-size: 24rpx;
+  color: #bbb;
+}
+
+/* ========== 功能菜单 ========== */
+.menu-list {
+  background: #fff;
+  margin-bottom: 16rpx;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 32rpx 24rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-label {
+  font-size: 30rpx;
+  color: #333;
+}
+
+.menu-arrow {
+  font-size: 32rpx;
+  color: #ccc;
+}
+
+.admin-item {
+  background: #f0f9ff;
+}
+
+.admin-item .menu-label {
+  color: #07C160;
+  font-weight: 500;
+}
+
+/* ========== 退出登录 ========== */
+.logout-btn {
+  margin: 40rpx 24rpx 0;
+  text-align: center;
+  padding: 28rpx 0;
+  background: #fff;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  color: #FF4D4F;
+  font-weight: 500;
+}

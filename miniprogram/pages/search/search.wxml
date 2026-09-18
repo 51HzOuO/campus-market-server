@@ -1,0 +1,71 @@
+<view class="page">
+
+  <!-- ========== 顶部导航栏 ========== -->
+  <view class="nav-bar" style="padding-top:{{statusBarHeight}}px">
+    <view class="nav-content">
+      <view class="nav-back" bindtap="goBack">
+        <text class="back-arrow">←</text>
+      </view>
+      <view class="search-box">
+        <text class="search-icon">🔍</text>
+        <input
+          class="search-input"
+          placeholder="搜索帖子标题或内容"
+          value="{{keyword}}"
+          bindinput="onInput"
+          bindconfirm="onConfirm"
+          confirm-type="search"
+          focus="{{true}}"
+        />
+        <view class="clear-btn" wx:if="{{keyword}}" bindtap="onClear">
+          <text>✕</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 导航栏占位 -->
+  <view style="height:{{navBarTotalHeight}}px"></view>
+
+  <!-- ========== 搜索结果列表 ========== -->
+  <view class="result-list" wx:if="{{posts.length > 0}}">
+    <view class="post-card" wx:for="{{posts}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="post-header">
+        <image class="post-avatar" src="{{item.avatar || '/images/default-avatar.png'}}" mode="aspectFill"/>
+        <view class="post-user">
+          <text class="post-nickname">{{item.nickname || '匿名用户'}}</text>
+          <text class="post-time">{{item.timeAgo}}</text>
+        </view>
+      </view>
+      <view class="post-body">
+        <text class="post-title" wx:if="{{item.title}}">{{item.title}}</text>
+        <text class="post-excerpt">{{item.excerpt}}</text>
+      </view>
+      <view class="post-stats">
+        <text class="stat-item" wx:if="{{item.likeCount > 0}}">{{item.likeCount}} 赞</text>
+        <text class="stat-item" wx:if="{{item.commentCount > 0}}">{{item.commentCount}} 评论</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-more" wx:if="{{loading}}">
+    <text>搜索中...</text>
+  </view>
+  <view class="loading-more" wx:if="{{noMore && posts.length > 0}}">
+    <text>— 没有更多了 —</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{!loading && hasSearched && posts.length === 0}}">
+    <text class="empty-icon">🔍</text>
+    <text class="empty-text">未找到相关内容</text>
+  </view>
+
+  <!-- 初始状态 -->
+  <view class="empty" wx:if="{{!loading && !hasSearched}}">
+    <text class="empty-icon">🔍</text>
+    <text class="empty-text">输入关键词搜索帖子</text>
+  </view>
+
+</view>

@@ -1,0 +1,134 @@
+<view class="page">
+
+  <!-- ========== 自定义顶部导航栏 ========== -->
+  <view class="nav-bar" style="padding-top:{{statusBarHeight}}px">
+    <view class="nav-content">
+      <view class="nav-left" bindtap="switchSchool">
+        <text class="nav-loc"></text>
+        <text class="school-name">{{schoolName}}</text>
+        <text class="nav-refresh">↻</text>
+      </view>
+      <view class="search-pill" bindtap="goSearch">
+        <text class="search-icon">🔍</text>
+        <text class="search-text">搜索</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 导航栏占位 -->
+  <view style="height:{{navBarTotalHeight}}px"></view>
+
+  <!-- ========== 四个功能入口 (2x2) ========== -->
+  <view class="func-grid">
+    <view
+      class="func-card func-card-{{index}}"
+      wx:for="{{funcEntries}}"
+      wx:key="module"
+      bindtap="goModule"
+      data-module="{{item.module}}"
+    >
+      <view class="func-text">
+        <view class="func-title-row">
+          <text class="func-title">{{item.title}}</text>
+          <text class="func-arrow">▶</text>
+        </view>
+        <text class="func-desc">{{item.desc}}</text>
+      </view>
+      <text class="func-emoji">{{item.icon}}</text>
+    </view>
+  </view>
+
+  <!-- ========== 置顶帖子 ========== -->
+  <view class="pinned-section" wx:if="{{pinnedPosts.length > 0}}">
+    <view class="pinned-item" wx:for="{{pinnedPosts}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <view class="pinned-badge">顶</view>
+      <text class="pinned-text">{{item.title || item.content}}</text>
+    </view>
+  </view>
+
+  <!-- ========== 集市火文 ========== -->
+  <view class="hot-section">
+    <view class="hot-header">
+      <text class="hot-fire">🔥</text>
+      <text class="hot-title">集市24小时火文</text>
+    </view>
+    <view class="hot-list">
+      <view class="hot-item hot-rank-{{item.rank}}" wx:for="{{hotPosts}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+        <text class="hot-rank-num">{{item.rank}}</text>
+        <text class="hot-title-text">{{item.title}}</text>
+        <text class="hot-like-count">{{item.likeCount}}赞</text>
+      </view>
+      <view class="hot-empty" wx:if="{{hotPosts.length === 0}}">
+        <text>暂无火文</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ========== 分类标签栏 ========== -->
+  <scroll-view class="cat-tabs" scroll-x enable-flex>
+    <view
+      class="cat-tab {{currentTab === index ? 'active' : ''}}"
+      wx:for="{{categories}}"
+      wx:key="index"
+      data-index="{{index}}"
+      bindtap="switchTab"
+    >{{item}}</view>
+  </scroll-view>
+
+  <!-- ========== 帖子列表 ========== -->
+  <view class="post-list">
+    <view class="post-card" wx:for="{{posts}}" wx:key="id">
+
+      <!-- 用户信息行 -->
+      <view class="post-header" bindtap="goDetail" data-id="{{item.id}}">
+        <image class="post-avatar" src="{{item.avatar || '/images/default-avatar.png'}}" mode="aspectFill"/>
+        <view class="post-user">
+          <view class="user-row">
+            <text class="post-nickname">{{item.nickname || '匿名用户'}}</text>
+            <view class="role-badge" style="background:{{item.activityColor}}20;color:{{item.activityColor}}">{{item.activityLevel || '新手上路'}}</view>
+          </view>
+          <text class="post-time">{{item.timeAgo}}</text>
+        </view>
+        <text class="post-more">···</text>
+      </view>
+
+      <!-- 标题 + 内容 -->
+      <view class="post-body" bindtap="goDetail" data-id="{{item.id}}">
+        <text class="post-title" wx:if="{{item.title}}">{{item.title}}</text>
+        <text class="post-content">{{item.content}}</text>
+      </view>
+
+      <!-- 底部操作 -->
+      <view class="post-actions">
+        <view class="action-right">
+          <view class="action-item" catchtap="goComment" data-id="{{item.id}}">
+            <text class="action-icon">💬</text>
+            <text class="action-num" wx:if="{{item.commentCount > 0}}">{{item.commentCount}}</text>
+          </view>
+          <view class="action-item" catchtap="toggleLike" data-id="{{item.id}}">
+            <text class="action-icon"></text>
+            <text class="action-num" wx:if="{{item.likeCount > 0}}">{{item.likeCount}}</text>
+          </view>
+        </view>
+      </view>
+
+    </view>
+  </view>
+
+  <!-- 底部状态 -->
+  <view class="loading-more" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+  <view class="loading-more" wx:if="{{noMore && posts.length > 0}}">
+    <text>— 没有更多了 —</text>
+  </view>
+  <view class="empty" wx:if="{{!loading && posts.length === 0}}">
+    <text>暂无帖子</text>
+  </view>
+
+  <!-- ========== 悬浮发帖按钮 ========== -->
+  <view class="fab" bindtap="goCreate">
+    <text class="fab-icon">+</text>
+  </view>
+
+</view>

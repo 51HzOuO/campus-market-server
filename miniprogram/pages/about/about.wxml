@@ -1,0 +1,83 @@
+<view class="page">
+
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar" style="padding-top:{{statusBarHeight}}px">
+    <view class="nav-content">
+      <view class="nav-back" bindtap="goBack">
+        <text class="back-arrow">←</text>
+      </view>
+      <text class="nav-title">关于我们</text>
+      <view class="nav-placeholder"></view>
+    </view>
+  </view>
+  <view style="height:{{navBarTotalHeight}}px"></view>
+
+  <!-- 内容 -->
+  <view class="content">
+
+    <!-- Logo 区域 -->
+    <view class="logo-section">
+      <view class="logo-icon">🏪</view>
+      <view class="app-name">校园集市</view>
+      <view class="app-version">v1.0.0</view>
+    </view>
+
+    <!-- 项目介绍 -->
+    <view class="card">
+      <view class="card-title">项目介绍</view>
+      <view class="card-content">校园集市是一个专为在校师生打造的校园生活服务平台。我们致力于为同学们提供便捷、安全的二手交易、跑腿代办、日常分享和校友求助等服务，让校园生活更加便利和精彩。</view>
+    </view>
+
+    <!-- 核心功能 -->
+    <view class="card">
+      <view class="card-title">核心功能</view>
+      <view class="feature-list">
+        <view class="feature-item">
+          <text class="feature-icon">🚴</text>
+          <text class="feature-text">跑腿代办 - 帮取快递、代办小事</text>
+        </view>
+        <view class="feature-item">
+          <text class="feature-icon">🛒</text>
+          <text class="feature-text">二手售卖 - 闲置物品、低价转让</text>
+        </view>
+        <view class="feature-item">
+          <text class="feature-icon">🌟</text>
+          <text class="feature-text">日常分享 - 校园生活、随手分享</text>
+        </view>
+        <view class="feature-item">
+          <text class="feature-icon">🤝</text>
+          <text class="feature-text">校友求助 - 问题咨询、经验求助</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 开发者信息 -->
+    <view class="card">
+      <view class="card-title">开发团队</view>
+      <view class="dev-info">
+        <view class="dev-row">
+          <text class="dev-label">开发者</text>
+          <text class="dev-value">栾博翔</text>
+        </view>
+        <view class="dev-row">
+          <text class="dev-label">项目类型</text>
+          <text class="dev-value">微信小程序 + Spring Boot</text>
+        </view>
+        <view class="dev-row">
+          <text class="dev-label">技术栈</text>
+          <text class="dev-value">Spring Boot 4.0 + MyBatis-Plus + MySQL</text>
+        </view>
+        <view class="dev-row">
+          <text class="dev-label">联系方式</text>
+          <text class="dev-value">campusmarket@example.com</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 版权信息 -->
+    <view class="copyright">
+      <text>Copyright © 2025 校园集市</text>
+      <text>All Rights Reserved</text>
+    </view>
+  </view>
+</view>

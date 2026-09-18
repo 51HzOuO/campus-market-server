@@ -1,0 +1,94 @@
+<view class="page">
+
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar" style="padding-top:{{statusBarHeight}}px">
+    <view class="nav-content">
+      <view class="nav-back" bindtap="goBack">
+        <text class="back-arrow">←</text>
+      </view>
+      <text class="nav-title">个人资料</text>
+      <view class="nav-placeholder"></view>
+    </view>
+  </view>
+  <view style="height:{{navBarTotalHeight}}px"></view>
+
+  <!-- 头像区域（点击可更换） -->
+  <view class="avatar-section" bindtap="chooseAvatar">
+    <image class="avatar" src="{{userInfo.avatar || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+    <text class="avatar-tip">点击更换头像</text>
+  </view>
+
+  <!-- 信息列表 -->
+  <view class="info-card">
+    <!-- 昵称（可编辑） -->
+    <view class="info-row editable" bindtap="editNickname">
+      <text class="info-label">昵称</text>
+      <view class="info-value-wrap">
+        <block wx:if="{{editingNickname}}">
+          <input class="inline-input" value="{{tempNickname}}" bindinput="onNicknameInput" focus="{{editingNickname}}" bindconfirm="saveNickname" bindblur="cancelNicknameEdit" placeholder="输入昵称" maxlength="20" />
+          <text class="save-btn" catchtap="saveNickname">保存</text>
+        </block>
+        <block wx:else>
+          <text class="info-value">{{userInfo.nickname || '未设置'}}</text>
+          <text class="arrow">›</text>
+        </block>
+      </view>
+    </view>
+
+    <!-- 学号（可编辑） -->
+    <view class="info-row editable" bindtap="editStudentNo">
+      <text class="info-label">学号</text>
+      <view class="info-value-wrap">
+        <block wx:if="{{editingStudentNo}}">
+          <input class="inline-input" value="{{tempStudentNo}}" bindinput="onStudentNoInput" focus="{{editingStudentNo}}" bindconfirm="saveStudentNo" bindblur="cancelStudentNoEdit" placeholder="输入学号" maxlength="20" type="number" />
+          <text class="save-btn" catchtap="saveStudentNo">保存</text>
+        </block>
+        <block wx:else>
+          <text class="info-value">{{userInfo.studentNo || '未绑定'}}</text>
+          <text class="arrow">›</text>
+        </block>
+      </view>
+    </view>
+
+    <!-- 活跃度等级 -->
+    <view class="info-row">
+      <text class="info-label">活跃度</text>
+      <view class="info-value-wrap">
+        <view class="activity-badge" style="background:{{userInfo.activityColor}}20;color:{{userInfo.activityColor}}">
+          {{userInfo.activityLevel || '新手上路'}}
+        </view>
+        <text class="activity-score">{{userInfo.activityScore || 0}} 分</text>
+      </view>
+    </view>
+
+    <!-- 发帖数 -->
+    <view class="info-row">
+      <text class="info-label">发帖数</text>
+      <view class="info-value-wrap">
+        <text class="info-value">{{postCount || 0}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 活跃度说明 -->
+  <view class="level-guide">
+    <view class="guide-title">活跃度等级说明</view>
+    <view class="guide-item">
+      <view class="guide-dot" style="background:#999999"></view>
+      <text class="guide-text">新手上路（0-50分）</text>
+    </view>
+    <view class="guide-item">
+      <view class="guide-dot" style="background:#2DBE9A"></view>
+      <text class="guide-text">活跃成员（50-200分）</text>
+    </view>
+    <view class="guide-item">
+      <view class="guide-dot" style="background:#FF8C00"></view>
+      <text class="guide-text">校园红人（200-500分）</text>
+    </view>
+    <view class="guide-item">
+      <view class="guide-dot" style="background:#FF4D4F"></view>
+      <text class="guide-text">集市大佬（500分以上）</text>
+    </view>
+    <view class="guide-tips">发帖 +10 | 点赞 +2 | 评论 +5</view>
+  </view>
+</view>
