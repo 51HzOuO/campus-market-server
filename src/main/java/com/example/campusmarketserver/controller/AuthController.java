@@ -11,6 +11,10 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 @RestController
 @RequestMapping("/auth")
@@ -18,27 +22,33 @@ public class AuthController {
 
     private final UserService userService;
 
+    // 微信小程序配置
+    private static final String APP_ID = "wx32e6ea903cabff40";
+    private static final String APP_SECRET = "ca0502220470bebc452ed315fb1201b7";
+
     public AuthController(UserService userService) {
         this.userService = userService;
     }
 
     /**
-     * 微信登录（暂写死 openid，等拿到 AppSecret 再改真实调用）
+     * 微信登录
      */
     @PostMapping("/login")
     public Result<Map<String, Object>> login(@RequestBody Map<String, String> params) {
         String code = params.get("code");
 
-        // TODO: 拿到 AppSecret 后改为真实调用微信接口换 openid
-        // String openid = getOpenidFromWechat(code);
-        String openid = "test_openid_001";
+        // 调用微信接口换 openid
+        String openid = getOpenidFromWechat(code);
+        if (openid == null) {
+            return Result.error(400, "微信登录失败");
+        }
 
         // 根据 openid 查找用户，不存在就创建
         User user = userService.getByOpenid(openid);
         if (user == null) {
             user = new User();
             user.setOpenid(openid);
-            user.setNickname("校园用户");
+            user.setNickname("校园用户" + openid.substring(0, 6));
             user.setAvatar("");
             user.setActivityScore(0);
             user.setStatus(1);
@@ -68,5 +78,38 @@ public class AuthController {
         data.put("activityColor", levelInfo.get("color"));
 
         return Result.success(data);
+    }
+
+    /**
+     * 调用微信接口换 openid
+     */
+    private String getOpenidFromWechat(String code) {
+        try {
+            String url = String.format(
+                "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",
+                APP_ID, APP_SECRET, code
+            );
+
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .GET()
+                .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            String responseBody = response.body();
+
+            // 简单解析 JSON，提取 openid
+            // 返回格式：{"openid":"xxx","session_key":"xxx"}
+            if (responseBody.contains("\"openid\"")) {
+                int start = responseBody.indexOf("\"openid\":\"") + 10;
+                int end = responseBody.indexOf("\"", start);
+                return responseBody.substring(start, end);
+            }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
