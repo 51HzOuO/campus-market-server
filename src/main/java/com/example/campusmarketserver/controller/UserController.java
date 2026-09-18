@@ -232,6 +232,7 @@ public class UserController {
             map.put("nickname", u.getNickname());
             map.put("avatar", AvatarUtil.fullUrl(u.getAvatar()));
             map.put("role", u.getRole() != null ? u.getRole() : 0);
+            map.put("status", u.getStatus() != null ? u.getStatus() : 0);
             map.put("activityScore", u.getActivityScore() != null ? u.getActivityScore() : 0);
             map.put("createTime", u.getCreateTime());
             userList.add(map);
@@ -281,5 +282,48 @@ public class UserController {
         userService.updateById(user);
 
         return Result.success("修改成功");
+    }
+
+    /**
+     * 管理员接口：封禁/解封用户
+     */
+    @PostMapping("/admin/ban")
+    public Result<String> adminBan(@RequestBody Map<String, Object> params) {
+        Long userId = UserContext.getUserId();
+        if (userId == null) {
+            return Result.error(401, "未登录");
+        }
+
+        User currentUser = userService.getById(userId);
+        if (currentUser == null || currentUser.getRole() == null || currentUser.getRole() != 1) {
+            return Result.error(403, "无权限");
+        }
+
+        Long targetUserId = Long.valueOf(params.get("userId").toString());
+
+        // 不能封禁管理员自己
+        if (targetUserId.equals(userId)) {
+            return Result.error(400, "不能封禁管理员自己");
+        }
+
+        User targetUser = userService.getById(targetUserId);
+        if (targetUser == null) {
+            return Result.error(404, "用户不存在");
+        }
+
+        // 不能封禁其他管理员
+        if (targetUser.getRole() != null && targetUser.getRole() == 1) {
+            return Result.error(400, "不能封禁管理员");
+        }
+
+        // 切换状态：0=正常，1=封禁
+        int newStatus = (targetUser.getStatus() != null && targetUser.getStatus() == 1) ? 0 : 1;
+
+        User user = new User();
+        user.setId(targetUserId);
+        user.setStatus(newStatus);
+        userService.updateById(user);
+
+        return Result.success(newStatus == 1 ? "封禁成功" : "解封成功");
     }
 }
