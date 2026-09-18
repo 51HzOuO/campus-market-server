@@ -163,9 +163,9 @@ public class UserController {
             return Result.error(400, "仅支持 jpg/png/gif/webp 格式的图片");
         }
 
-        // 生成唯一文件名，保存到 static/avatars/ 目录
+        // 生成唯一文件名，保存到 /tmp/avatars/ 目录（云托管容器里可写）
         String fileName = UUID.randomUUID().toString().replace("-", "") + ext;
-        String dir = System.getProperty("user.dir") + "/src/main/resources/static/avatars";
+        String dir = "/tmp/avatars";
         File dirFile = new File(dir);
         if (!dirFile.exists()) {
             dirFile.mkdirs();
