@@ -190,4 +190,81 @@ public class UserController {
         result.put("url", avatarUrl);
         return Result.success(result);
     }
+
+    /**
+     * 临时接口：把当前用户设为管理员（仅初始化用）
+     */
+    @PostMapping("/become-admin")
+    public Result<String> becomeAdmin() {
+        Long userId = UserContext.getUserId();
+        if (userId == null) {
+            return Result.error(401, "未登录");
+        }
+
+        User user = new User();
+        user.setId(userId);
+        user.setRole(1); // 1=管理员
+        userService.updateById(user);
+
+        return Result.success("已成为管理员");
+    }
+
+    /**
+     * 管理员接口：获取所有用户列表
+     */
+    @GetMapping("/admin/list")
+    public Result<Map<String, Object>> adminList() {
+        Long userId = UserContext.getUserId();
+        if (userId == null) {
+            return Result.error(401, "未登录");
+        }
+
+        User currentUser = userService.getById(userId);
+        if (currentUser == null || currentUser.getRole() == null || currentUser.getRole() != 1) {
+            return Result.error(403, "无权限");
+        }
+
+        List<User> users = userService.list();
+        List<Map<String, Object>> userList = new java.util.ArrayList<>();
+        for (User u : users) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", u.getId());
+            map.put("nickname", u.getNickname());
+            map.put("avatar", AvatarUtil.fullUrl(u.getAvatar()));
+            map.put("role", u.getRole() != null ? u.getRole() : 0);
+            map.put("activityScore", u.getActivityScore() != null ? u.getActivityScore() : 0);
+            map.put("createTime", u.getCreateTime());
+            userList.add(map);
+        }
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("users", userList);
+        return Result.success(data);
+    }
+
+    /**
+     * 管理员接口：修改用户角色
+     */
+    @PostMapping("/admin/update-role")
+    public Result<String> adminUpdateRole(@RequestBody Map<String, Object> params) {
+        Long userId = UserContext.getUserId();
+        if (userId == null) {
+            return Result.error(401, "未登录");
+        }
+
+        User currentUser = userService.getById(userId);
+        if (currentUser == null || currentUser.getRole() == null || currentUser.getRole() != 1) {
+            return Result.error(403, "无权限");
+        }
+
+        Long targetUserId = Long.valueOf(params.get("userId").toString());
+        Integer role = Integer.valueOf(params.get("role").toString());
+
+        User user = new User();
+        user.setId(targetUserId);
+        user.setRole(role);
+        userService.updateById(user);
+
+        return Result.success("修改成功");
+    }
 }
