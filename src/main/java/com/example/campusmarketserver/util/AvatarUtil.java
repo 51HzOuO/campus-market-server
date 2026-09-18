@@ -5,11 +5,11 @@ package com.example.campusmarketserver.util;
  */
 public class AvatarUtil {
 
-    private static final String BASE_URL = "shturl.cc/6yhbRYwXpob6wFJvTlKwoHjGcaQ4rMBZ5pUjEIgwooqozFkz83DI40Ug";
+    private static final String BASE_URL = "https://springboot-4xrc-316010-10-1490372189.sh.run.tcloudbase.com";
 
     /**
      * 将相对路径转为完整 URL
-     * 例如 /avatars/xxx.jpeg → shturl.cc/6yhbRYwXpob6wFJvTlKwoHjGcaQ4rMBZ5pUjEIgwooqozFkz83DI40Ug/avatars/xxx.jpeg
+     * 例如 /avatars/xxx.jpeg → https://xxx/avatars/xxx.jpeg
      */
     public static String fullUrl(String avatar) {
         if (avatar == null || avatar.isEmpty()) {
