@@ -52,6 +52,7 @@ public class AuthController {
             user.setAvatar("");
             user.setActivityScore(0);
             user.setStatus(1);
+            user.setRole(0);
             user.setCreateTime(LocalDateTime.now());
             user.setUpdateTime(LocalDateTime.now());
             userService.save(user);
@@ -90,6 +91,8 @@ public class AuthController {
                 APP_ID, APP_SECRET, code
             );
 
+            System.out.println("微信登录请求URL: " + url);
+
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -99,12 +102,22 @@ public class AuthController {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             String responseBody = response.body();
 
+            System.out.println("微信登录返回: " + responseBody);
+
+            // 检查有没有 errcode，如果有错误就返回 null
+            if (responseBody.contains("\"errcode\"")) {
+                System.out.println("微信登录失败: " + responseBody);
+                return null;
+            }
+
             // 简单解析 JSON，提取 openid
             // 返回格式：{"openid":"xxx","session_key":"xxx"}
             if (responseBody.contains("\"openid\"")) {
                 int start = responseBody.indexOf("\"openid\":\"") + 10;
                 int end = responseBody.indexOf("\"", start);
-                return responseBody.substring(start, end);
+                String openid = responseBody.substring(start, end);
+                System.out.println("解析到的openid: " + openid);
+                return openid;
             }
             return null;
         } catch (Exception e) {
