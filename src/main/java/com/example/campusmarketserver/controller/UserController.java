@@ -243,7 +243,7 @@ public class UserController {
     }
 
     /**
-     * 管理员接口：修改用户角色
+     * 管理员接口：修改用户角色（只能在 普通用户0 和 审核员2 之间切换，不能设为管理员1）
      */
     @PostMapping("/admin/update-role")
     public Result<String> adminUpdateRole(@RequestBody Map<String, Object> params) {
@@ -259,6 +259,21 @@ public class UserController {
 
         Long targetUserId = Long.valueOf(params.get("userId").toString());
         Integer role = Integer.valueOf(params.get("role").toString());
+
+        // 不能把别人设为管理员
+        if (role == 1) {
+            return Result.error(400, "不能设置其他用户为管理员");
+        }
+
+        // 不能修改管理员自己的角色
+        if (targetUserId.equals(userId)) {
+            return Result.error(400, "不能修改管理员自己的角色");
+        }
+
+        // 只能在 0（普通用户）和 2（审核员）之间切换
+        if (role != 0 && role != 2) {
+            return Result.error(400, "角色只能是 普通用户(0) 或 审核员(2)");
+        }
 
         User user = new User();
         user.setId(targetUserId);
