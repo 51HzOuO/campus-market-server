@@ -11,10 +11,15 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.security.cert.X509Certificate;
 
 @RestController
 @RequestMapping("/auth")
@@ -82,36 +87,49 @@ public class AuthController {
     }
 
     /**
-     * 调用微信接口换 openid
+     * 调用微信接口换 openid（忽略 SSL 证书校验）
      */
     private String getOpenidFromWechat(String code) {
         try {
-            String url = String.format(
+            String urlStr = String.format(
                 "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",
                 APP_ID, APP_SECRET, code
             );
 
-            System.out.println("微信登录请求URL: " + url);
+            System.out.println("微信登录请求URL: " + urlStr);
 
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .GET()
-                .build();
+            // 忽略 SSL 证书校验
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, new TrustManager[]{new X509TrustManager() {
+                public X509Certificate[] getAcceptedIssuers() { return null; }
+                public void checkClientTrusted(X509Certificate[] certs, String authType) { }
+                public void checkServerTrusted(X509Certificate[] certs, String authType) { }
+            }}, new java.security.SecureRandom());
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            String responseBody = response.body();
+            URL url = new URL(urlStr);
+            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+            conn.setSSLSocketFactory(sc.getSocketFactory());
+            conn.setHostnameVerifier((hostname, session) -> true);
+            conn.setRequestMethod("GET");
 
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            String responseBody = response.toString();
             System.out.println("微信登录返回: " + responseBody);
 
-            // 检查有没有 errcode，如果有错误就返回 null
+            // 检查有没有 errcode
             if (responseBody.contains("\"errcode\"")) {
                 System.out.println("微信登录失败: " + responseBody);
                 return null;
             }
 
-            // 简单解析 JSON，提取 openid
-            // 返回格式：{"openid":"xxx","session_key":"xxx"}
+            // 解析 openid
             if (responseBody.contains("\"openid\"")) {
                 int start = responseBody.indexOf("\"openid\":\"") + 10;
                 int end = responseBody.indexOf("\"", start);
