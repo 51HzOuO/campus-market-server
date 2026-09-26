@@ -1,6 +1,7 @@
 const { request } = require('../../utils/request');
 
-const BASE_URL = 'https://shturl.cc/6yhbRYwXpob6wFJvTlKwoHjGcaQ4rMBZ5pUjEIgwooqozFkz83DI40Ug';
+const BASE_URL = 'shturl.cc/6UM6zXeqmA6KFXjHdlyfLcGPRKsU3xOxExDOB5sUxmSxyH22e37qLs0Z';
+
 
 Page({
   data: {

@@ -1,0 +1,124 @@
+<view class="page">
+
+<!-- ========== 自定义顶部导航栏 ========== -->
+<view class="nav-bar" style="padding-top:{{statusBarHeight}}px">
+  <view class="nav-content">
+    <view class="nav-left" bindtap="switchSchool">
+      <text class="icon-loc">&#x1F4CD;</text>
+      <text class="school-name">{{schoolName}}</text>
+      <text class="icon-arrow-down">&#x25BE;</text>
+    </view>
+    <view class="search-box" bindtap="goSearch">
+      <text class="icon-search">&#x1F50D;</text>
+      <text class="search-placeholder">搜索帖子</text>
+    </view>
+  </view>
+</view>
+
+<!-- 导航栏占位 -->
+<view style="height:{{navBarTotalHeight}}px"></view>
+
+<!-- ========== 四个功能入口 (2x2) ========== -->
+<view class="func-grid">
+  <view
+    class="func-card"
+    wx:for="{{funcEntries}}"
+    wx:key="module"
+    bindtap="goModule"
+    data-module="{{item.module}}"
+  >
+    <view class="func-left">
+      <text class="func-title">{{item.title}}</text>
+      <text class="func-desc">{{item.desc}}</text>
+    </view>
+    <view class="func-right">
+      <text class="func-icon">{{item.icon}}</text>
+      <text class="func-arrow">&#x203A;</text>
+    </view>
+  </view>
+</view>
+
+<!-- ========== 置顶帖子区 ========== -->
+<view class="section" wx:if="{{pinnedPosts.length > 0}}">
+  <view class="section-header">
+    <text class="section-title">置顶公告</text>
+  </view>
+  <view
+    class="pinned-card"
+    wx:for="{{pinnedPosts}}"
+    wx:key="id"
+    bindtap="goDetail"
+    data-id="{{item.id}}"
+  >
+    <view class="pinned-tag">顶</view>
+    <text class="pinned-text">{{item.title || item.content}}</text>
+  </view>
+</view>
+
+<!-- ========== 分类标签栏 ========== -->
+<scroll-view class="cat-tabs" scroll-x enable-flex>
+  <view
+    class="cat-tab {{currentTab === index ? 'active' : ''}}"
+    wx:for="{{categories}}"
+    wx:key="index"
+    data-index="{{index}}"
+    bindtap="switchTab"
+  >{{item}}</view>
+</scroll-view>
+
+<!-- ========== 帖子列表 ========== -->
+<view class="post-list">
+  <view
+    class="post-card"
+    wx:for="{{posts}}"
+    wx:key="id"
+    bindtap="goDetail"
+    data-id="{{item.id}}"
+  >
+    <view class="post-top">
+      <!-- 头像 -->
+      <image class="post-avatar" src="{{item.avatar || '/images/default-avatar.png'}}" mode="aspectFill"/>
+      <!-- 昵称 + 身份 + 时间 -->
+      <view class="post-meta">
+        <view class="meta-row">
+          <text class="post-nickname">{{item.nickname || '匿名用户'}}</text>
+          <view class="role-badge">{{item.role === 1 ? '老师' : '学生'}}</view>
+        </view>
+        <text class="post-time">{{item.timeAgo}}</text>
+      </view>
+    </view>
+
+    <text class="post-title">{{item.title}}</text>
+    <text class="post-content">{{item.content}}</text>
+
+    <!-- 底部：评论 + 点赞 -->
+    <view class="post-bottom">
+      <view class="action-item" catchtap="goComment" data-id="{{item.id}}">
+        <text class="action-icon">&#x1F4AC;</text>
+        <text class="action-num">{{item.commentCount || 0}}</text>
+      </view>
+      <view class="action-item" catchtap="toggleLike" data-id="{{item.id}}">
+        <text class="action-icon">&#x1F44D;</text>
+        <text class="action-num">{{item.likeCount || 0}}</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 底部状态 -->
+<view class="loading-more" wx:if="{{loading}}">
+  <text>加载中...</text>
+</view>
+<view class="loading-more" wx:if="{{noMore && posts.length > 0}}">
+  <text>— 没有更多了 —</text>
+</view>
+<view class="empty" wx:if="{{!loading && posts.length === 0}}">
+  <text>暂无帖子</text>
+</view>
+
+<!-- ========== 悬浮发帖按钮 ========== -->
+<view class="fab" bindtap="goCreate">
+  <text class="fab-icon">+</text>
+</view>
+
+</view>

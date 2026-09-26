@@ -1,5 +1,4 @@
 const { request } = require('../../utils/request');
-
 const MODULE_LABELS = ['跑腿代办', '二手售卖', '日常分享', '校友求助'];
 
 Page({
@@ -31,7 +30,6 @@ Page({
     } catch (e) {
       // ignore
     }
-
     if (options.id) {
       this.setData({ postId: options.id });
       this.loadPostDetail(options.id);
@@ -43,9 +41,6 @@ Page({
     wx.navigateBack({ delta: 1 });
   },
 
-  /**
-   * 加载帖子详情
-   */
   loadPostDetail(id) {
     request({
       url: '/post/detail/' + id,
@@ -54,8 +49,6 @@ Page({
         if (res.statusCode === 200 && res.data && res.data.code === 200) {
           const post = res.data.data;
           post.timeAgo = post.createTimeStr || this.formatTime(post.createTime);
-
-          // 解析图片
           let imageList = [];
           if (post.images) {
             try {
@@ -67,7 +60,6 @@ Page({
               // ignore
             }
           }
-
           this.setData({
             post: post,
             imageList: imageList,
@@ -83,12 +75,8 @@ Page({
     });
   },
 
-  /**
-   * 加载评论列表
-   */
   loadComments(postId) {
     this.setData({ loadingComments: true });
-
     request({
       url: '/comment/list',
       data: { postId: postId },
@@ -102,18 +90,13 @@ Page({
           this.setData({ comments: comments });
         }
       },
-      fail: () => {
-        // 静默失败
-      },
+      fail: () => {},
       complete: () => {
         this.setData({ loadingComments: false });
       }
     });
   },
 
-  /**
-   * 预览图片
-   */
   previewImage(e) {
     const index = e.currentTarget.dataset.index;
     wx.previewImage({
@@ -122,12 +105,8 @@ Page({
     });
   },
 
-  /**
-   * 点赞/取消点赞
-   */
   toggleLike() {
     if (!this.data.post) return;
-
     request({
       url: '/post/like',
       method: 'POST',
@@ -147,16 +126,10 @@ Page({
     });
   },
 
-  /**
-   * 评论输入
-   */
   onCommentInput(e) {
     this.setData({ commentText: e.detail.value });
   },
 
-  /**
-   * 回复评论
-   */
   replyComment(e) {
     const userId = e.currentTarget.dataset.id;
     const userName = e.currentTarget.dataset.user;
@@ -166,18 +139,13 @@ Page({
     });
   },
 
-  /**
-   * 提交评论
-   */
   submitComment() {
     const content = this.data.commentText.trim();
     if (!content) {
       wx.showToast({ title: '请输入评论内容', icon: 'none' });
       return;
     }
-
     if (!this.data.postId) return;
-
     request({
       url: '/comment/add',
       method: 'POST',
@@ -194,7 +162,6 @@ Page({
             replyTo: '',
             replyToId: null
           });
-          // 刷新评论列表和帖子详情
           this.loadComments(this.data.postId);
           this.loadPostDetail(this.data.postId);
         } else {
@@ -208,9 +175,6 @@ Page({
     });
   },
 
-  /**
-   * 格式化时间
-   */
   formatTime(timeVal) {
     if (!timeVal) return '';
     let date;
@@ -235,31 +199,30 @@ Page({
     return (date.getMonth() + 1) + '-' + date.getDate();
   },
 
-  showReportDialog: function () {
+  showReportDialog() {
     this.setData({ showReport: true, reportReason: '' });
   },
 
-  hideReportDialog: function () {
+  hideReportDialog() {
     this.setData({ showReport: false, reportReason: '' });
   },
 
-  stopEvent: function () {
+  stopEvent() {
     // 阻止事件冒泡
   },
 
-  selectReason: function (e) {
-    var reason = e.currentTarget.dataset.reason;
+  selectReason(e) {
+    const reason = e.currentTarget.dataset.reason;
     this.setData({ reportReason: reason });
   },
 
-  submitReport: function () {
-    var that = this;
-    var reason = this.data.reportReason;
+  submitReport() {
+    const that = this;
+    const reason = this.data.reportReason;
     if (!reason) {
       wx.showToast({ title: '请选择举报原因', icon: 'none' });
       return;
     }
-
     request({
       url: '/report/add',
       method: 'POST',
@@ -272,7 +235,7 @@ Page({
           wx.showToast({ title: '举报成功', icon: 'success' });
           that.hideReportDialog();
         } else {
-          var msg = (res.data && res.data.message) || '举报失败';
+          const msg = (res.data && res.data.message) || '举报失败';
           wx.showToast({ title: msg, icon: 'none' });
         }
       },

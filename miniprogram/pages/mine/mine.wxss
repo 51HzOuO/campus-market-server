@@ -83,15 +83,6 @@
   color: #ccc;
 }
 
-.admin-item {
-  background: #f0f9ff;
-}
-
-.admin-item .menu-label {
-  color: #07C160;
-  font-weight: 500;
-}
-
 /* ========== 退出登录 ========== */
 .logout-btn {
   margin: 40rpx 24rpx 0;

@@ -1,14 +1,16 @@
-const BASE_URL = 'https://shturl.cc/6yhbRYwXpob6wFJvTlKwoHjGcaQ4rMBZ5pUjEIgwooqozFkz83DI40Ug';
-
 /**
- * 封装 wx.request，自动携带 token
+ * 封装 wx.cloud.callContainer，自动携带 token
  * @param {Object} options - { url, method, data, success, fail, complete }
  */
 function request(options) {
   const token = wx.getStorageSync('token') || '';
 
-  wx.request({
-    url: BASE_URL + options.url,
+  wx.cloud.callContainer({
+    config: {
+      env: 'prod-d9g22ewvw948428fc'
+    },
+    service: 'springboot-4xrc',
+    path: options.url,
     method: options.method || 'GET',
     data: options.data || {},
     header: Object.assign({
@@ -16,7 +18,6 @@ function request(options) {
       'Authorization': token ? ('Bearer ' + token) : ''
     }, options.header || {}),
     success: (res) => {
-      // 401 未登录，跳转或提示
       if (res.data && res.data.code === 401) {
         wx.showToast({ title: '请先登录', icon: 'none' });
         if (typeof options.fail === 'function') {

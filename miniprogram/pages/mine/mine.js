@@ -19,7 +19,7 @@ Page({
       { label: '免责声明', action: 'disclaimer' },
       { label: '关于我们', action: 'about' }
     ],
-    adminMenu: null // 管理员/审核员菜单
+    adminMenu: null
   },
 
   onLoad() {
@@ -31,7 +31,40 @@ Page({
   },
 
   /**
-   * 加载用户信息 - 调用后端 /user/info 接口
+   * 点击登录
+   */
+  doLogin() {
+    wx.login({
+      success: (res) => {
+        if (res.code) {
+          wx.cloud.callContainer({
+            config: {
+              env: 'prod-d9g22ewvw948428fc'
+            },
+            service: 'springboot-4xrc',
+            path: '/auth/login',
+            method: 'POST',
+            data: { code: res.code },
+            success: (response) => {
+              if (response.data.code === 200) {
+                const token = response.data.data.token;
+                wx.setStorageSync('token', token);
+                wx.setStorageSync('userInfo', response.data.data);
+                wx.showToast({ title: '登录成功', icon: 'success' });
+                this.loadUserInfo();
+              }
+            },
+            fail: () => {
+              wx.showToast({ title: '登录失败，请重试', icon: 'none' });
+            }
+          });
+        }
+      }
+    });
+  },
+
+  /**
+   * 加载用户信息
    */
   loadUserInfo() {
     request({
@@ -42,7 +75,6 @@ Page({
           const data = res.data.data;
           const role = data.role || 0;
           
-          // 根据角色设置管理菜单
           let adminMenu = null;
           if (role === 1) {
             adminMenu = { label: '管理后台', action: 'admin' };
@@ -65,7 +97,7 @@ Page({
         }
       },
       fail: () => {
-        // 静默失败，保持默认数据
+        // 静默失败
       }
     });
   },
@@ -119,8 +151,8 @@ Page({
       confirmColor: '#FF4D4F',
       success: (res) => {
         if (res.confirm) {
-          // 清除登录态
           wx.removeStorageSync('token');
+          wx.removeStorageSync('userInfo');
           this.setData({
             userInfo: {
               nickname: '',
