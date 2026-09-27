@@ -1,7 +1,16 @@
 HELP.md
 .mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+
+# Maven build output
+target/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# WeChat Developer Tools local settings
+project.private.config.json
 
 ### STS ###
 .apt_generated

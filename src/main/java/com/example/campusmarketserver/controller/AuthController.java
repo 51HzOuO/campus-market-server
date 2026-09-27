@@ -5,6 +5,7 @@ import com.example.campusmarketserver.entity.User;
 import com.example.campusmarketserver.service.UserService;
 import com.example.campusmarketserver.util.ActivityUtil;
 import com.example.campusmarketserver.util.AvatarUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -27,12 +28,16 @@ public class AuthController {
 
     private final UserService userService;
 
-    // 微信小程序配置
-    private static final String APP_ID = "wx32e6ea903cabff40";
-    private static final String APP_SECRET = "${WX_APP_SECRET}";
+    private final String appId;
+    private final String appSecret;
 
-    public AuthController(UserService userService) {
+    public AuthController(
+            UserService userService,
+            @Value("${wechat.app-id}") String appId,
+            @Value("${wechat.app-secret}") String appSecret) {
         this.userService = userService;
+        this.appId = appId;
+        this.appSecret = appSecret;
     }
 
     /**
@@ -93,10 +98,8 @@ public class AuthController {
         try {
             String urlStr = String.format(
                 "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",
-                APP_ID, APP_SECRET, code
+                appId, appSecret, code
             );
-
-            System.out.println("微信登录请求URL: " + urlStr);
 
             // 忽略 SSL 证书校验
             SSLContext sc = SSLContext.getInstance("TLS");
@@ -121,11 +124,9 @@ public class AuthController {
             in.close();
 
             String responseBody = response.toString();
-            System.out.println("微信登录返回: " + responseBody);
 
             // 检查有没有 errcode
             if (responseBody.contains("\"errcode\"")) {
-                System.out.println("微信登录失败: " + responseBody);
                 return null;
             }
 
@@ -134,12 +135,11 @@ public class AuthController {
                 int start = responseBody.indexOf("\"openid\":\"") + 10;
                 int end = responseBody.indexOf("\"", start);
                 String openid = responseBody.substring(start, end);
-                System.out.println("解析到的openid: " + openid);
                 return openid;
             }
             return null;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("微信登录请求失败");
             return null;
         }
     }
