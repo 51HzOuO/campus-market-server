@@ -28,12 +28,14 @@ then choose the business review or content management link.
 
 ## WeChat Developer Tools
 
-Import the repository's `miniprogram` directory as the mini-program root and
-keep `project.config.json` as the project configuration. The pages are already
-registered in `miniprogram/app.json`. Set the backend domain to the deployed
-cloud service URL in `miniprogram/utils/request.js`, then log in from the
-**我的** tab. The backend must have the environment variables configured and
-the module SQL executed before testing create, join, purchase, or order flows.
+Import the repository root (the directory containing `project.config.json`) in
+WeChat Developer Tools. Its `miniprogramRoot` already points to `miniprogram/`,
+where the pages are registered in `app.json`. Replace the `appid` in
+`project.config.json` if this is a different Mini Program, then set the
+backend domain to the deployed service URL in `miniprogram/utils/request.js`.
+Log in from the **我的** tab. The backend must have the environment variables
+configured and the module SQL executed before testing create, join, purchase,
+or order flows.
 
 ## GitHub Actions / deployment
 
