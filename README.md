@@ -17,7 +17,8 @@ With a CloudBase managed MySQL binding, the `prod` profile accepts
 `MYSQL_ADDRESS`, `MYSQL_USERNAME`, and `MYSQL_PASSWORD`; it defaults to the
 `campus_market` database. Set `MYSQL_JDBC_URL` when the database name differs.
 When both variable sets are present, the `MYSQL_*` values are used in `prod`
-and `DB_*` remains the fallback for other profiles.
+and `DB_*` remains the fallback for other profiles. To use a complete custom
+`DB_URL` while keeping the `prod` profile, set it as `MYSQL_JDBC_URL`.
 
 For local development, copy `.env.example` to an untracked `.env` file and
 export the values in your shell. Docker deployments can pass the same values

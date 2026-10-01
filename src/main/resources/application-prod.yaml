@@ -1,7 +1,7 @@
 # CloudBase's managed MySQL binding is the authoritative production source.
-# MYSQL_JDBC_URL can be supplied when the database name is not campus_market.
+# MYSQL_JDBC_URL can be supplied when a complete custom JDBC URL is needed.
 spring:
   datasource:
-    url: "${MYSQL_JDBC_URL:${DB_URL:jdbc:mysql://${MYSQL_ADDRESS}/campus_market?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}}"
+    url: "${MYSQL_JDBC_URL:jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE:campus_market}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}"
     username: "${MYSQL_USERNAME:${DB_USERNAME}}"
     password: "${MYSQL_PASSWORD:${DB_PASSWORD}}"
