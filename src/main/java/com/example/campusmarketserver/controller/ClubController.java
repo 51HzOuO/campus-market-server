@@ -39,10 +39,12 @@ public class ClubController {
         Club club = clubService.getById(id);
         if (club == null || !Integer.valueOf(1).equals(club.getStatus())) return Result.error(404, "社团不存在");
         Map<String, Object> data = new HashMap<>(); data.put("club", club);
-        data.put("activities", activityService.list(new LambdaQueryWrapper<ClubActivity>()
+        List<ClubActivity> activities = activityService.list(new LambdaQueryWrapper<ClubActivity>()
                 .eq(ClubActivity::getClubId, id).eq(ClubActivity::getStatus, 1)
-                .orderByDesc(ClubActivity::getStartTime)));
+                .orderByDesc(ClubActivity::getStartTime));
         Long userId = UserContext.getUserId();
+        markJoined(activities, userId);
+        data.put("activities", activities);
         data.put("joined", userId != null && isMember(id, userId));
         return Result.success(data);
     }
@@ -96,7 +98,11 @@ public class ClubController {
 
     @GetMapping("/activity/list")
     public Result<List<ClubActivity>> activities(@RequestParam Long clubId) {
-        return Result.success(activityService.list(new LambdaQueryWrapper<ClubActivity>().eq(ClubActivity::getClubId, clubId).eq(ClubActivity::getStatus, 1).orderByAsc(ClubActivity::getStartTime)));
+        List<ClubActivity> activities = activityService.list(new LambdaQueryWrapper<ClubActivity>()
+                .eq(ClubActivity::getClubId, clubId).eq(ClubActivity::getStatus, 1)
+                .orderByAsc(ClubActivity::getStartTime));
+        markJoined(activities, UserContext.getUserId());
+        return Result.success(activities);
     }
 
     @GetMapping("/activity/detail/{id}")
@@ -131,5 +137,20 @@ public class ClubController {
     }
 
     private boolean isMember(Long clubId, Long userId) { return memberService.count(new LambdaQueryWrapper<ClubMember>().eq(ClubMember::getClubId, clubId).eq(ClubMember::getUserId, userId).eq(ClubMember::getStatus, 1)) > 0; }
+
+    private void markJoined(List<ClubActivity> activities, Long userId) {
+        if (activities == null || activities.isEmpty()) return;
+        if (userId == null) {
+            activities.forEach(activity -> activity.setJoined(false));
+            return;
+        }
+        List<Long> activityIds = activities.stream().map(ClubActivity::getId).toList();
+        java.util.Set<Long> joinedIds = activityMemberService.list(new LambdaQueryWrapper<ClubActivityMember>()
+                        .in(ClubActivityMember::getActivityId, activityIds)
+                        .eq(ClubActivityMember::getUserId, userId)
+                        .eq(ClubActivityMember::getStatus, 1))
+                .stream().map(ClubActivityMember::getActivityId).collect(java.util.stream.Collectors.toSet());
+        activities.forEach(activity -> activity.setJoined(joinedIds.contains(activity.getId())));
+    }
     private static Long longValue(Object value) { try { return value == null ? null : Long.valueOf(String.valueOf(value)); } catch (Exception e) { return null; } }
 }

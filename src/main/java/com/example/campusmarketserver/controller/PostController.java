@@ -117,6 +117,14 @@ public class PostController {
      */
     @PostMapping("/create")
     public Result<Post> create(@RequestBody Post post) {
+        Long currentUserId = UserContext.getUserId();
+        if (currentUserId == null) {
+            return Result.error(401, "未登录");
+        }
+        if (post == null) {
+            return Result.error(400, "帖子内容不能为空");
+        }
+
         // 敏感词检测
         String checkContent = (post.getTitle() != null ? post.getTitle() : "")
                 + (post.getContent() != null ? post.getContent() : "");
@@ -125,10 +133,9 @@ public class PostController {
             return Result.error(400, "内容包含敏感词：" + String.join("、", hits) + "，请修改后重新发布");
         }
 
-        Long currentUserId = UserContext.getUserId();
-        if (post.getUserId() == null) {
-            post.setUserId(currentUserId);
-        }
+        // Never trust a client-supplied author ID. The interceptor has already
+        // authenticated this request, so the session user is the only owner.
+        post.setUserId(currentUserId);
 
         // 设置默认值
         if (post.getLikeCount() == null) post.setLikeCount(0);

@@ -106,7 +106,7 @@
             <text class="action-num" wx:if="{{item.commentCount > 0}}">{{item.commentCount}}</text>
           </view>
           <view class="action-item" catchtap="toggleLike" data-id="{{item.id}}">
-            <text class="action-icon"></text>
+            <text class="action-icon">{{item.isLiked ? '❤️' : '🤍'}}</text>
             <text class="action-num" wx:if="{{item.likeCount > 0}}">{{item.likeCount}}</text>
           </view>
         </view>

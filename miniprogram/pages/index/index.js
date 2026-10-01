@@ -197,7 +197,39 @@ Page({
   },
 
   toggleLike(e) {
-    wx.showToast({ title: '点赞功能开发中', icon: 'none' });
+    const postId = Number(e.currentTarget.dataset.id);
+    if (!postId) return;
+
+    this._likingPosts = this._likingPosts || Object.create(null);
+    if (this._likingPosts[postId]) return;
+    this._likingPosts[postId] = true;
+
+    request({
+      url: '/post/like',
+      method: 'POST',
+      data: { postId },
+      showError: false,
+      success: (res) => {
+        if (res.statusCode === 200 && res.data && res.data.code === 200) {
+          const result = res.data.data || {};
+          const index = this.data.posts.findIndex(post => Number(post.id) === postId);
+          if (index >= 0) {
+            this.setData({
+              [`posts[${index}].isLiked`]: Boolean(result.liked),
+              [`posts[${index}].likeCount`]: Number(result.likeCount || 0)
+            });
+          }
+          return;
+        }
+        wx.showToast({ title: (res.data && res.data.message) || '点赞失败', icon: 'none' });
+      },
+      fail: (error) => {
+        wx.showToast({ title: (error && error.message) || '点赞失败，请重试', icon: 'none' });
+      },
+      complete: () => {
+        delete this._likingPosts[postId];
+      }
+    });
   },
 
   // ==================== 工具方法 ====================

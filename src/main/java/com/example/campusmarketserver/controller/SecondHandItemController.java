@@ -66,6 +66,12 @@ public class SecondHandItemController {
     public Result<SecondHandItemVO> detail(@PathVariable Long id) {
         SecondHandItem item = itemService.getById(id);
         if (item == null) return Result.error(404, "商品不存在");
+        Long viewerId = UserContext.getUserId();
+        boolean ownerOrBuyer = viewerId != null
+                && (viewerId.equals(item.getUserId()) || viewerId.equals(item.getBuyerId()));
+        if (!Integer.valueOf(1).equals(item.getAuditStatus()) && !ownerOrBuyer) {
+            return Result.error(404, "商品不存在");
+        }
         return Result.success(toVO(item));
     }
 

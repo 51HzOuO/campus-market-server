@@ -103,7 +103,18 @@ public class ErrandOrderController {
     public Result<ErrandOrderVO> detail(@PathVariable Long id) {
         ErrandOrder order = errandOrderService.getById(id);
         if (order == null) return Result.error(404, "跑腿订单不存在");
-        return Result.success(errandOrderService.toViews(List.of(order)).get(0));
+        Long viewerId = UserContext.getUserId();
+        boolean participant = viewerId != null
+                && (viewerId.equals(order.getPublisherId()) || viewerId.equals(order.getRunnerId()));
+        if (!Integer.valueOf(ErrandOrder.AUDIT_APPROVED).equals(order.getAuditStatus()) && !participant) {
+            return Result.error(404, "跑腿订单不存在");
+        }
+        ErrandOrderVO view = errandOrderService.toViews(List.of(order)).get(0);
+        // Contact information is only needed by the two parties to the order.
+        if (!participant) {
+            view.setContactPhone(null);
+        }
+        return Result.success(view);
     }
 
     /** 抢单使用带 status 条件的更新，两个用户同时点击时只有一个能成功。 */
