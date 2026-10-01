@@ -3,6 +3,8 @@ HELP.md
 
 # Maven build output
 target/
+!**/src/main/**/target/
+!**/src/test/**/target/
 
 # Local environment files
 .env
