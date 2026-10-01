@@ -13,7 +13,19 @@
     "pages/profile/profile",
     "pages/search/search",
     "pages/admin/admin",
-    "pages/audit/audit"
+    "pages/audit/audit",
+    "pages/errand-list/errand-list",
+    "pages/errand-create/errand-create",
+    "pages/errand-detail/errand-detail",
+    "pages/market/market",
+    "pages/market-detail/market-detail",
+    "pages/market-publish/market-publish",
+    "pages/club/club",
+    "pages/club-detail/club-detail",
+    "pages/club-create/club-create",
+    "pages/club-activity/club-activity",
+    "pages/module-audit/module-audit",
+    "pages/module-admin/module-admin"
   ],
   "window": {
     "navigationBarTitleText": "校园集市",

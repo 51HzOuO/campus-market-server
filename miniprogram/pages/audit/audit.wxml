@@ -12,6 +12,8 @@
   </view>
   <view style="height:{{navBarTotalHeight}}px"></view>
 
+  <view class="module-entry" bindtap="goModuleAudit">跑腿 / 二手 / 社团业务审核　›</view>
+
   <!-- 举报列表 -->
   <view class="report-list">
     <view class="report-item {{item.status === 1 ? 'handled' : ''}}" wx:for="{{reports}}" wx:key="id">

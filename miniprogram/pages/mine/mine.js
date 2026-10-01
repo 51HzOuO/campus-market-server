@@ -30,6 +30,20 @@ Page({
     this.loadUserInfo();
   },
 
+  doLogin() {
+    const app = getApp();
+    wx.showLoading({ title: '登录中' });
+    app.tryLogin((ok) => {
+      wx.hideLoading();
+      if (ok) {
+        this.loadUserInfo();
+        wx.showToast({ title: '登录成功', icon: 'success' });
+      } else {
+        wx.showToast({ title: '登录失败，请重试', icon: 'none' });
+      }
+    });
+  },
+
   /**
    * 加载用户信息 - 调用后端 /user/info 接口
    */

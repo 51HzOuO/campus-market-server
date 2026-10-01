@@ -1,0 +1,9 @@
+<view class="page">
+  <view class="section"><input class="title" placeholder="商品标题" maxlength="80" data-field="title" bindinput="input" /></view>
+  <view class="section"><textarea class="description" placeholder="描述商品的新旧程度、配置和交易说明" maxlength="2000" data-field="description" bindinput="input" auto-height></textarea><text class="count">{{description.length}}/2000</text></view>
+  <view class="section row"><text>价格（元）</text><input class="price" type="digit" placeholder="0.00" data-field="price" bindinput="input" /></view>
+  <view class="section"><text class="label">商品分类</text><view class="categories"><view wx:for="{{categories}}" wx:key="index" class="category {{categoryIndex === index ? 'active' : ''}}" data-index="{{index}}" bindtap="selectCategory">{{item}}</view></view></view>
+  <view class="section"><input placeholder="交易地点（选填）" data-field="location" bindinput="input" /><input class="contact" placeholder="联系方式（选填）" data-field="contact" bindinput="input" /></view>
+  <view class="section"><text class="label">商品图片（最多9张）</text><view class="images"><view wx:for="{{images}}" wx:key="index" class="image-wrap"><image src="{{item}}" mode="aspectFill" /><text data-index="{{index}}" catchtap="deleteImage">×</text></view><view class="add" wx:if="{{images.length < 9}}" bindtap="chooseImage">＋</view></view></view>
+  <button class="submit" loading="{{submitting}}" disabled="{{submitting}}" bindtap="submit">提交审核</button>
+</view>

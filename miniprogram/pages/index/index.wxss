@@ -92,6 +92,7 @@
 .func-card-1 { background: #fef9e7; }
 .func-card-2 { background: #eafaf1; }
 .func-card-3 { background: #fde8e8; }
+.func-card-4 { background: #efe8fd; }
 
 .func-text {
   flex: 1;

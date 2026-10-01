@@ -14,6 +14,10 @@
     </view>
   </view>
 
+  <view class="login-btn" wx:if="{{!userInfo.nickname}}" bindtap="doLogin">
+    <text>微信一键登录</text>
+  </view>
+
   <!-- 管理入口 -->
   <view class="menu-list" wx:if="{{adminMenu}}">
     <view class="menu-item admin-item" bindtap="onAdminTap">
@@ -31,7 +35,7 @@
   </view>
 
   <!-- 退出登录 -->
-  <view class="logout-btn" bindtap="logout">
+  <view class="logout-btn" wx:if="{{userInfo.nickname}}" bindtap="logout">
     <text>退出登录</text>
   </view>
 

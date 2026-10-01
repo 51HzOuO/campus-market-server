@@ -1,0 +1,2 @@
+const { request } = require('../../utils/request');
+Page({ data: { name: '', description: '', contact: '' }, input(e) { this.setData({ [e.currentTarget.dataset.field]: e.detail.value }); }, submit() { if (!this.data.name || !this.data.description) return wx.showToast({ title: '请填写名称和简介', icon: 'none' }); request({ url: '/club/create', method: 'POST', data: this.data, success: r => { if (r.data && r.data.code === 200) { wx.showToast({ title: '已提交审核', icon: 'success' }); setTimeout(() => wx.navigateBack(), 700); } } }); } });

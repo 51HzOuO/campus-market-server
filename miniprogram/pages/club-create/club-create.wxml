@@ -1,0 +1,1 @@
+<view class="page"><input placeholder="社团名称" data-field="name" bindinput="input"/><textarea placeholder="社团简介" data-field="description" bindinput="input"/><input placeholder="联系方式（可选）" data-field="contact" bindinput="input"/><button type="primary" bindtap="submit">提交审核</button></view>

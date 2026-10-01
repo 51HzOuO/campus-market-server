@@ -6,6 +6,7 @@ const FUNC_ENTRIES = [
   { title: '跑腿代办', desc: '帮取快递 代办小事', icon: '🚴', module: 0 },
   { title: '二手售卖', desc: '闲置物品 低价转让', icon: '🛒', module: 1 },
   { title: '日常分享', desc: '校园生活 随手分享', icon: '🌟', module: 2 },
+  { title: '社团活动', desc: '加入社团 参加活动', icon: '🎓', module: 4 },
   { title: '校友求助', desc: '问题咨询 经验求助', icon: '🤝', module: 3 }
 ];
 
@@ -158,6 +159,18 @@ Page({
 
   goModule(e) {
     const module = e.currentTarget.dataset.module;
+    if (module === 0) {
+      wx.navigateTo({ url: '/pages/errand-list/errand-list' });
+      return;
+    }
+    if (module === 1) {
+      wx.navigateTo({ url: '/pages/market/market' });
+      return;
+    }
+    if (module === 4) {
+      wx.navigateTo({ url: '/pages/club/club' });
+      return;
+    }
     const tabIndex = module + 1;
     this.setData({ currentTab: tabIndex, posts: [], page: 1, noMore: false });
     this.loadPosts(true);

@@ -1,0 +1,35 @@
+<view class="page">
+  <view class="loading" wx:if="{{loading}}">加载中...</view>
+  <block wx:if="{{order}}">
+    <view class="card head-card">
+      <view class="title-line"><text class="urgent" wx:if="{{order.urgent === 1}}">加急</text><text class="title">{{order.title}}</text><text class="status">{{order.statusText}}</text></view>
+      <text class="desc">{{order.description}}</text>
+      <view class="price">¥{{order.priceText}}</view>
+      <text class="time">发布于 {{order.createText}}</text>
+    </view>
+    <view class="card">
+      <view class="card-title">取送路线</view>
+      <view class="route"><text class="dot from"></text><view><text class="route-label">取件</text><text>{{order.pickupLocation}}</text></view></view>
+      <view class="line"></view>
+      <view class="route"><text class="dot to"></text><view><text class="route-label">送达</text><text>{{order.deliveryLocation}}</text></view></view>
+      <view class="measure">距离 {{order.distanceKm}} 公里 · 重量 {{order.weightKg}} 公斤</view>
+    </view>
+    <view class="card info-card">
+      <view class="card-title">订单信息</view>
+      <view class="info-row"><text>发布者</text><text>{{order.publisherNickname}}</text></view>
+      <view class="info-row" wx:if="{{order.runnerNickname}}"><text>接单人</text><text>{{order.runnerNickname}}</text></view>
+      <view class="info-row" wx:if="{{order.contactPhone}}"><text>联系方式</text><text>{{order.contactPhone}}</text></view>
+      <view class="info-row"><text>支付状态</text><text>{{order.paymentStatusText}}</text></view>
+    </view>
+    <view class="audit-tip" wx:if="{{order.auditStatus === 0}}">审核中，通过后才会进入可接单列表</view>
+    <view class="audit-tip rejected" wx:if="{{order.auditStatus === 2}}">审核未通过：{{order.auditRemark || '请修改后重新发布'}}</view>
+  </block>
+
+  <view class="bottom" wx:if="{{order}}">
+    <button class="action cancel" wx:if="{{(order.status === 1 || order.status === 2 || order.status === 3) && (order.publisherId === currentUserId || order.runnerId === currentUserId)}}" data-action="cancel" bindtap="action">取消订单</button>
+    <button class="action primary" wx:if="{{order.status === 1 && order.auditStatus === 1 && order.publisherId !== currentUserId}}" data-action="accept" bindtap="action">立即接单</button>
+    <button class="action primary" wx:if="{{order.status === 2 && order.publisherId === currentUserId}}" data-action="pay" bindtap="action">确认支付</button>
+    <button class="action primary" wx:if="{{order.status === 3 && order.runnerId === currentUserId}}" data-action="complete" bindtap="action">我已完成</button>
+    <button class="action primary" wx:if="{{order.status === 4 && order.publisherId === currentUserId}}" data-action="confirm" bindtap="action">确认收货</button>
+  </view>
+</view>

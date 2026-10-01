@@ -92,6 +92,16 @@
   font-weight: 500;
 }
 
+.login-btn {
+  margin: 24rpx;
+  padding: 28rpx 0;
+  text-align: center;
+  background: #07C160;
+  color: #fff;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+}
+
 /* ========== 退出登录 ========== */
 .logout-btn {
   margin: 40rpx 24rpx 0;

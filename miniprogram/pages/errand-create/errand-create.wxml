@@ -1,0 +1,26 @@
+<view class="page">
+  <view class="form-card">
+    <view class="label">需求标题</view>
+    <input class="input" maxlength="80" placeholder="例如：帮我取一份快递" value="{{title}}" data-field="title" bindinput="input" />
+
+    <view class="label">需求说明</view>
+    <textarea class="textarea" maxlength="1000" placeholder="请说明物品、时间等具体要求" value="{{description}}" data-field="description" bindinput="input"></textarea>
+
+    <view class="label">取送地点</view>
+    <input class="input" maxlength="255" placeholder="取件地点" value="{{pickupLocation}}" data-field="pickupLocation" bindinput="input" />
+    <input class="input gap" maxlength="255" placeholder="送达地点" value="{{deliveryLocation}}" data-field="deliveryLocation" bindinput="input" />
+
+    <view class="label">计价信息</view>
+    <view class="row">
+      <view class="number-box"><input type="digit" placeholder="距离" value="{{distanceKm}}" data-field="distanceKm" bindinput="input" /><text>公里</text></view>
+      <view class="number-box"><input type="digit" placeholder="重量" value="{{weightKg}}" data-field="weightKg" bindinput="input" /><text>公斤</text></view>
+    </view>
+    <view class="urgent-row" bindtap="toggleUrgent"><view class="checkbox {{urgent === 1 ? 'checked' : ''}}">{{urgent === 1 ? '✓' : ''}}</view><text>加急配送（加收 ¥3.00）</text></view>
+    <view class="price-box"><text>预估费用</text><text class="price">¥{{price}}</text></view>
+
+    <view class="label">联系方式（选填）</view>
+    <input class="input" maxlength="32" placeholder="方便接单人联系你" value="{{contactPhone}}" data-field="contactPhone" bindinput="input" />
+  </view>
+  <view class="tip">发布后需审核通过，接单人完成任务后由你确认支付。</view>
+  <button class="submit {{submitting ? 'disabled' : ''}}" bindtap="submit" loading="{{submitting}}">提交跑腿需求</button>
+</view>

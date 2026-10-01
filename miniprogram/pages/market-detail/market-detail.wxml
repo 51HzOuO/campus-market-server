@@ -1,0 +1,12 @@
+<view class="page" wx:if="{{item}}">
+  <swiper class="gallery" wx:if="{{images.length}}" indicator-dots="true"><swiper-item wx:for="{{images}}" wx:key="index"><image class="gallery-img" src="{{item}}" mode="aspectFill" data-src="{{item}}" bindtap="previewImage" /></swiper-item></swiper>
+  <view class="content">
+    <view class="price">¥{{item.price}}</view><text class="title">{{item.title}}</text>
+    <view class="seller-row"><text>{{item.sellerNickname || '匿名用户'}}</text><text>{{item.location || '校内面交'}}</text></view>
+    <view class="line"></view><text class="label">商品描述</text><text class="description">{{item.description}}</text>
+    <view class="line"></view><view class="info"><text>分类</text><text>{{item.category || '其他'}}</text></view><view class="info"><text>联系方式</text><text>{{item.contact || '请先购买后联系卖家'}}</text></view>
+    <view class="status">{{item.status === 1 ? '在售' : item.status === 2 ? '已售出' : '已下架'}} · {{item.auditStatus === 0 ? '审核中' : item.auditStatus === 2 ? '审核未通过' : '审核通过'}}</view>
+  </view>
+  <view class="bottom"><button wx:if="{{item.status === 1}}" class="buy" bindtap="buy">立即购买</button><button wx:if="{{item.status === 1}}" class="off" bindtap="offShelf">下架商品</button></view>
+</view>
+<view class="empty" wx:if="{{!loading && !item}}">商品不存在或已删除</view>

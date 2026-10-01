@@ -37,6 +37,7 @@
       <text class="stat-num">{{stats.todayPosts || 0}}</text>
       <text class="stat-label">今日新增帖子</text>
     </view>
+    <view class="module-admin-entry" bindtap="goModuleAdmin">跑腿 / 二手 / 社团内容管理　›</view>
   </view>
 
   <!-- 用户管理 -->

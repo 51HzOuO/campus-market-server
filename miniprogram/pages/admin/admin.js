@@ -43,6 +43,10 @@ Page({
     wx.navigateBack({ delta: 1 });
   },
 
+  goModuleAdmin: function () {
+    wx.navigateTo({ url: '/pages/module-admin/module-admin' });
+  },
+
   switchTab: function (e) {
     var tab = parseInt(e.currentTarget.dataset.tab);
     if (tab === this.data.currentTab) return;

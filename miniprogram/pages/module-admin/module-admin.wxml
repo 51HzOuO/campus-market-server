@@ -1,0 +1,9 @@
+<view class="page">
+  <view class="header"><text bindtap="goBack">‹</text><text>业务内容管理</text><view></view></view>
+  <picker mode="selector" range="{{types}}" value="{{typeIndex}}" bindchange="changeType"><view class="picker">{{types[typeIndex]}}　⌄</view></picker>
+  <view class="card" wx:for="{{items}}" wx:key="id">
+    <view class="row"><text class="title">{{item.title || '未命名内容'}}</text><text class="status">状态 {{item.status}}</text></view>
+    <view class="actions"><button size="mini" data-item="{{item}}" bindtap="toggle">{{item.status === 0 || item.status === 3 || item.status === 6 ? '恢复' : '下架'}}</button></view>
+  </view>
+  <view class="empty" wx:if="{{!loading && items.length === 0}}">暂无内容</view>
+</view>

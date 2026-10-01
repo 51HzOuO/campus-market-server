@@ -24,6 +24,10 @@ Page({
     wx.navigateBack({ delta: 1 });
   },
 
+  goModuleAudit() {
+    wx.navigateTo({ url: '/pages/module-audit/module-audit' });
+  },
+
   loadReports() {
     this.setData({ loading: true });
     request({

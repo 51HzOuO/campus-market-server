@@ -1,0 +1,1 @@
+.page{padding:30rpx;background:#f5f6f8;min-height:100vh}.page input,.page textarea{box-sizing:border-box;width:100%;background:#fff;border-radius:12rpx;padding:24rpx;margin-bottom:20rpx}.page textarea{height:260rpx}
