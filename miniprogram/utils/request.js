@@ -1,4 +1,7 @@
-const { BASE_URL, REQUEST_TIMEOUT } = require('./config');
+// Keep request configuration in this module so the mini-program startup bundle
+// cannot omit a separate config module needed by app.js.
+const BASE_URL = 'https://springboot-4xrc-316010-10-1490372189.sh.run.tcloudbase.com';
+const REQUEST_TIMEOUT = 20000;
 
 function toAbsoluteUrl(path) {
   if (!path) return '';

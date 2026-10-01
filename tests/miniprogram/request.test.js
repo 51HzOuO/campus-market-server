@@ -45,7 +45,6 @@ function harness(options = {}) {
       module, exports: module.exports, wx, console: { warn: (...args) => logs.push(args) },
       getApp: () => app, App: definition => { app = definition; },
       require: spec => {
-        if (spec === './config') return load('utils/config.js');
         if (spec === './utils/request') return load('utils/request.js');
         throw new Error('Unexpected module ' + spec);
       }

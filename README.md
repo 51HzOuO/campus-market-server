@@ -35,7 +35,7 @@ Import the repository root (the directory containing `project.config.json`) in
 WeChat Developer Tools. Its `miniprogramRoot` already points to `miniprogram/`,
 where the pages are registered in `app.json`. Replace the `appid` in
 `project.config.json` if this is a different Mini Program, then set the
-deployed service URL in `miniprogram/utils/config.js`. Add that host to the
+deployed service URL in `miniprogram/utils/request.js`. Add that host to the
 Mini Program request and upload-file legal-domain allowlists before release.
 Log in from the **我的** tab. The backend must have the environment variables
 configured and the module SQL executed before testing create, join, purchase,
