@@ -1,4 +1,4 @@
-const BASE_URL = 'https://shturl.cc/6yhbRYwXpob6wFJvTlKwoHjGcaQ4rMBZ5pUjEIgwooqozFkz83DI40Ug';
+const { BASE_URL } = require('./utils/request');
 
 App({
   globalData: {

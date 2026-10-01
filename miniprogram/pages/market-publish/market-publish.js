@@ -1,5 +1,4 @@
-const { request } = require('../../utils/request');
-const BASE_URL = 'https://shturl.cc/6yhbRYwXpob6wFJvTlKwoHjGcaQ4rMBZ5pUjEIgwooqozFkz83DI40Ug';
+const { request, BASE_URL } = require('../../utils/request');
 const CATEGORIES = ['数码', '书籍', '生活用品', '服饰', '其他'];
 
 Page({
