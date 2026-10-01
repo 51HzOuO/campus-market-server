@@ -26,6 +26,9 @@ The new pages are available from the home screen: **跑腿代办**, **二手售�
 and **社团活动**. Use **我的** to open the auditor or administrator entry,
 then choose the business review or content management link.
 
+跑腿支付当前为演示模式：点击支付不会调用微信支付或产生扣款，会直接将
+订单标记为“交易成功（模拟支付）”。
+
 ## WeChat Developer Tools
 
 Import the repository root (the directory containing `project.config.json`) in

@@ -81,7 +81,7 @@ public class ErrandOrderVO {
 
     public static String paymentStatusText(Integer status) {
         if (status == null || status == ErrandOrder.PAYMENT_UNPAID) return "待支付";
-        if (status == ErrandOrder.PAYMENT_PAID) return "已支付";
+        if (status == ErrandOrder.PAYMENT_PAID) return "已支付（模拟）";
         if (status == ErrandOrder.PAYMENT_REFUNDED) return "已退款";
         return "未知";
     }

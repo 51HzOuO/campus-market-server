@@ -21,6 +21,6 @@
     <view class="label">联系方式（选填）</view>
     <input class="input" maxlength="32" placeholder="方便接单人联系你" value="{{contactPhone}}" data-field="contactPhone" bindinput="input" />
   </view>
-  <view class="tip">发布后需审核通过，接单人完成任务后由你确认支付。</view>
+  <view class="tip">发布后需审核通过；接单后点击模拟支付即可直接完成交易，不会真实扣款。</view>
   <button class="submit {{submitting ? 'disabled' : ''}}" bindtap="submit" loading="{{submitting}}">提交跑腿需求</button>
 </view>

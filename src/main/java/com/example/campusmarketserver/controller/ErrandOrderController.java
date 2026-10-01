@@ -129,7 +129,10 @@ public class ErrandOrderController {
         return Result.error(409, "订单已被其他人接单或已失效");
     }
 
-    /** 发布者确认付款并开始履约。这里记录支付状态，真实微信支付可在此处接入支付回调。 */
+    /**
+     * 模拟支付：不调用任何扣款或微信支付接口，点击后直接把订单标记为交易成功。
+     * 真实支付接入时只需替换这里的状态变更，并保留支付回调校验。
+     */
     @PostMapping("/{id}/pay")
     public Result<ErrandOrderVO> pay(@PathVariable Long id) {
         Long userId = currentUserId();
@@ -139,10 +142,12 @@ public class ErrandOrderController {
         if (!Integer.valueOf(ErrandOrder.STATUS_ACCEPTED).equals(order.getStatus())) {
             return Result.error(400, "当前订单不能支付");
         }
+        LocalDateTime now = LocalDateTime.now();
         order.setPaymentStatus(ErrandOrder.PAYMENT_PAID);
-        order.setStatus(ErrandOrder.STATUS_IN_PROGRESS);
-        order.setPaidTime(LocalDateTime.now());
-        order.setUpdateTime(LocalDateTime.now());
+        order.setStatus(ErrandOrder.STATUS_COMPLETED);
+        order.setPaidTime(now);
+        order.setCompletedTime(now);
+        order.setUpdateTime(now);
         errandOrderService.updateById(order);
         return Result.success(errandOrderService.toViews(List.of(order)).get(0));
     }

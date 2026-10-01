@@ -46,14 +46,14 @@ Page({
       return;
     }
     if (action === 'pay') {
-      wx.showModal({ title: '确认支付', content: '本次将支付 ¥' + this.data.order.priceText + '，确认继续吗？', success: (r) => { if (r.confirm) this.sendAction(action, id); } });
+      wx.showModal({ title: '模拟支付', content: '这是演示支付，不会真实扣款；确认后订单将直接交易成功。', success: (r) => { if (r.confirm) this.sendAction(action, id); } });
       return;
     }
     this.sendAction(action, id);
   },
 
   sendAction(action, id) {
-    const names = { accept: '接单成功', pay: '支付成功', complete: '已提交完成', confirm: '订单已完成', cancel: '订单已取消' };
+    const names = { accept: '接单成功', pay: '交易成功（模拟支付）', complete: '已提交完成', confirm: '订单已完成', cancel: '订单已取消' };
     request({
       url: '/errand/' + id + '/' + action,
       method: 'POST',

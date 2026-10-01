@@ -28,7 +28,7 @@
   <view class="bottom" wx:if="{{order}}">
     <button class="action cancel" wx:if="{{(order.status === 1 || order.status === 2 || order.status === 3) && (order.publisherId === currentUserId || order.runnerId === currentUserId)}}" data-action="cancel" bindtap="action">取消订单</button>
     <button class="action primary" wx:if="{{order.status === 1 && order.auditStatus === 1 && order.publisherId !== currentUserId}}" data-action="accept" bindtap="action">立即接单</button>
-    <button class="action primary" wx:if="{{order.status === 2 && order.publisherId === currentUserId}}" data-action="pay" bindtap="action">确认支付</button>
+    <button class="action primary" wx:if="{{order.status === 2 && order.publisherId === currentUserId}}" data-action="pay" bindtap="action">模拟支付并完成交易</button>
     <button class="action primary" wx:if="{{order.status === 3 && order.runnerId === currentUserId}}" data-action="complete" bindtap="action">我已完成</button>
     <button class="action primary" wx:if="{{order.status === 4 && order.publisherId === currentUserId}}" data-action="confirm" bindtap="action">确认收货</button>
   </view>

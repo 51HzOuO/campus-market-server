@@ -4,7 +4,7 @@
     <view class="tab {{scope === 'mine' ? 'active' : ''}}" data-scope="mine" bindtap="switchScope">我的订单</view>
   </view>
 
-  <view class="notice">费用按距离、重量自动计算，接单后由发布者确认支付。</view>
+  <view class="notice">费用按距离、重量自动计算；接单后点击模拟支付，订单直接交易成功，不会真实扣款。</view>
 
   <view class="loading" wx:if="{{loading}}">加载中...</view>
   <view class="empty" wx:if="{{!loading && orders.length === 0}}">{{emptyText}}</view>
