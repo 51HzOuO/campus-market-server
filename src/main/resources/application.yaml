@@ -14,9 +14,11 @@ spring:
       max-request-size: 10MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    # Prefer the explicit DB_* variables, but support CloudBase's managed
+    # MySQL binding without requiring a manually assembled JDBC URL.
+    url: "${DB_URL:jdbc:mysql://${MYSQL_ADDRESS:localhost:3306}/${MYSQL_DATABASE:campus_market}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}"
+    username: "${DB_USERNAME:${MYSQL_USERNAME}}"
+    password: "${DB_PASSWORD:${MYSQL_PASSWORD}}"
 
 mybatis-plus:
   mapper-locations: classpath:mapper/**/*.xml
