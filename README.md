@@ -13,10 +13,11 @@ environment variables before starting it:
 | `WX_APP_ID` | WeChat Mini Program app ID |
 | `WX_APP_SECRET` | WeChat Mini Program app secret |
 
-With a CloudBase managed MySQL binding, the service also accepts
-`MYSQL_ADDRESS`, `MYSQL_USERNAME`, and `MYSQL_PASSWORD`; `MYSQL_DATABASE` is
-optional and defaults to `campus_market`. Explicit `DB_*` variables take
-precedence when both sets are present.
+With a CloudBase managed MySQL binding, the `prod` profile accepts
+`MYSQL_ADDRESS`, `MYSQL_USERNAME`, and `MYSQL_PASSWORD`; it defaults to the
+`campus_market` database. Set `MYSQL_JDBC_URL` when the database name differs.
+When both variable sets are present, the `MYSQL_*` values are used in `prod`
+and `DB_*` remains the fallback for other profiles.
 
 For local development, copy `.env.example` to an untracked `.env` file and
 export the values in your shell. Docker deployments can pass the same values
