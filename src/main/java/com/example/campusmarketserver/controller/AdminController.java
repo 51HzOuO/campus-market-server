@@ -131,7 +131,7 @@ public class AdminController {
         user.setStatus(newStatus);
         userService.updateById(user);
 
-        return Result.success(newStatus == 0 ? "已封禁" : "已解封");
+        return Result.success(newStatus == 1 ? "已封禁" : "已解封");
     }
 
     /**

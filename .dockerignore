@@ -1,0 +1,11 @@
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+target
+miniprogram
+tests
+scripts
+README.md
+docs

@@ -1,4 +1,4 @@
-const { request } = require('../../utils/request');
+const { requestAsync, uploadImage, toAbsoluteUrl } = require('../../utils/request');
 
 const MODULES = ['跑腿代办', '二手售卖', '日常分享', '校友求助'];
 
@@ -114,7 +114,7 @@ Page({
   /**
    * 提交帖子
    */
-  submitPost() {
+  async submitPost() {
     if (!this.data.canPublish || this.data.submitting) return;
 
     const { selectedModule, title, content, images } = this.data;
@@ -135,33 +135,34 @@ Page({
 
     this.setData({ submitting: true });
 
-    request({
-      url: '/post/create',
-      method: 'POST',
-      data: {
-        module: selectedModule,
-        title: title.trim(),
-        content: content.trim(),
-        images: images.length > 0 ? JSON.stringify(images) : '[]'
-      },
-      success: (res) => {
-        if (res.data && res.data.code === 200) {
-          wx.showToast({ title: '发布成功', icon: 'success' });
-          setTimeout(() => {
-            wx.navigateBack({ delta: 1 });
-          }, 1000);
-        } else {
-          const msg = (res.data && res.data.message) || '发布失败';
-          wx.showToast({ title: msg, icon: 'none' });
-        }
-      },
-      fail: () => {
-        wx.showToast({ title: '网络错误，请重试', icon: 'none' });
-      },
-      complete: () => {
-        this.setData({ submitting: false });
+    try {
+      const uploadedImages = [];
+      for (const filePath of images) {
+        const image = await uploadImage(filePath);
+        const url = image && (image.fullUrl || toAbsoluteUrl(image.url));
+        if (!url) throw new Error('图片上传未返回有效地址，请重试');
+        uploadedImages.push(url);
       }
-    });
+
+      await requestAsync({
+        url: '/post/create',
+        method: 'POST',
+        data: {
+          module: selectedModule,
+          title: title.trim(),
+          content: content.trim(),
+          images: JSON.stringify(uploadedImages)
+        }
+      });
+      wx.showToast({ title: '发布成功', icon: 'success' });
+      setTimeout(() => wx.navigateBack({ delta: 1 }), 1000);
+    } catch (err) {
+      if (!err || !err.notified) {
+        wx.showToast({ title: (err && err.message) || '发布失败，请重试', icon: 'none' });
+      }
+    } finally {
+      this.setData({ submitting: false });
+    }
   },
 
   /**

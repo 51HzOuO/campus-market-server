@@ -1,6 +1,4 @@
-const { request } = require('../../utils/request');
-
-const BASE_URL = 'https://shturl.cc/6yhbRYwXpob6wFJvTlKwoHjGcaQ4rMBZ5pUjEIgwooqozFkz83DI40Ug';
+const { request, uploadImage, toAbsoluteUrl } = require('../../utils/request');
 
 Page({
   data: {
@@ -15,6 +13,7 @@ Page({
       studentNo: ''
     },
     postCount: 0,
+    uploadingAvatar: false,
     // 昵称编辑
     editingNickname: false,
     tempNickname: '',
@@ -58,7 +57,7 @@ Page({
           this.setData({
             userInfo: {
               nickname: data.nickname || '校园用户',
-              avatar: data.avatar || '',
+              avatar: toAbsoluteUrl(data.avatar || ''),
               activityLevel: data.activityLevel || '新手上路',
               activityColor: data.activityColor || '#999999',
               activityScore: data.activityScore || 0,
@@ -80,6 +79,7 @@ Page({
    * 选择并上传头像
    */
   chooseAvatar() {
+    if (this.data.uploadingAvatar) return;
     wx.chooseImage({
       count: 1,
       sizeType: ['compressed'],
@@ -94,43 +94,24 @@ Page({
   /**
    * 上传头像到后端
    */
-  uploadAvatar(filePath) {
+  async uploadAvatar(filePath) {
+    if (this.data.uploadingAvatar) return;
+    this.setData({ uploadingAvatar: true });
     wx.showLoading({ title: '上传中...' });
-
-    const token = wx.getStorageSync('token') || '';
-
-    wx.uploadFile({
-      url: BASE_URL + '/user/upload-avatar',
-      filePath: filePath,
-      name: 'file',
-      header: {
-        'Authorization': token ? ('Bearer ' + token) : ''
-      },
-      success: (res) => {
-        if (res.statusCode === 200) {
-          try {
-            const data = JSON.parse(res.data);
-            if (data.code === 200 && data.data && data.data.url) {
-              wx.showToast({ title: '头像已更新', icon: 'success' });
-              this.setData({ 'userInfo.avatar': data.data.url });
-            } else {
-              const msg = data.message || '上传失败';
-              wx.showToast({ title: msg, icon: 'none' });
-            }
-          } catch (e) {
-            wx.showToast({ title: '解析失败', icon: 'none' });
-          }
-        } else {
-          wx.showToast({ title: '上传失败', icon: 'none' });
-        }
-      },
-      fail: () => {
-        wx.showToast({ title: '网络错误', icon: 'none' });
-      },
-      complete: () => {
-        wx.hideLoading();
+    try {
+      const image = await uploadImage(filePath, '/user/upload-avatar');
+      const avatar = image && (image.fullUrl || toAbsoluteUrl(image.url));
+      if (!avatar) throw new Error('头像上传未返回有效地址，请重试');
+      this.setData({ 'userInfo.avatar': avatar });
+      wx.showToast({ title: '头像已更新', icon: 'success' });
+    } catch (err) {
+      if (!err || !err.notified) {
+        wx.showToast({ title: (err && err.message) || '头像上传失败，请重试', icon: 'none' });
       }
-    });
+    } finally {
+      wx.hideLoading();
+      this.setData({ uploadingAvatar: false });
+    }
   },
 
   // ==================== 昵称编辑 ====================
@@ -178,8 +159,8 @@ Page({
           wx.showToast({ title: msg, icon: 'none' });
         }
       },
-      fail: () => {
-        wx.showToast({ title: '网络错误', icon: 'none' });
+      fail: (err) => {
+        if (!err || !err.notified) wx.showToast({ title: (err && err.message) || '修改失败，请重试', icon: 'none' });
       }
     });
   },
@@ -229,8 +210,8 @@ Page({
           wx.showToast({ title: msg, icon: 'none' });
         }
       },
-      fail: () => {
-        wx.showToast({ title: '网络错误', icon: 'none' });
+      fail: (err) => {
+        if (!err || !err.notified) wx.showToast({ title: (err && err.message) || '修改失败，请重试', icon: 'none' });
       }
     });
   },

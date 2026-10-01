@@ -22,24 +22,23 @@ Page({
     adminMenu: null // 管理员/审核员菜单
   },
 
-  onLoad() {
-    this.loadUserInfo();
-  },
-
   onShow() {
-    this.loadUserInfo();
+    const app = getApp();
+    if (wx.getStorageSync('token') || app._loginPromise) this.loadUserInfo();
+    else this.resetUserInfo();
   },
 
   doLogin() {
     const app = getApp();
     wx.showLoading({ title: '登录中' });
-    app.tryLogin((ok) => {
+    app.tryLogin((ok, user, message) => {
       wx.hideLoading();
       if (ok) {
         this.loadUserInfo();
         wx.showToast({ title: '登录成功', icon: 'success' });
       } else {
-        wx.showToast({ title: '登录失败，请重试', icon: 'none' });
+        this.resetUserInfo();
+        wx.showModal({ title: '登录失败', content: message || '请检查后端服务和小程序 AppID', showCancel: false });
       }
     });
   },
@@ -48,6 +47,8 @@ Page({
    * 加载用户信息 - 调用后端 /user/info 接口
    */
   loadUserInfo() {
+    if (this._loadingUser) return;
+    this._loadingUser = true;
     request({
       url: '/user/info',
       method: 'GET',
@@ -76,11 +77,21 @@ Page({
             },
             adminMenu: adminMenu
           });
+        } else if (res.data && res.data.code === 401) {
+          this.resetUserInfo();
         }
       },
       fail: () => {
-        // 静默失败，保持默认数据
-      }
+        if (!wx.getStorageSync('token')) this.resetUserInfo();
+      },
+      complete: () => { this._loadingUser = false; }
+    });
+  },
+
+  resetUserInfo() {
+    this.setData({
+      userInfo: { nickname: '', avatar: '', activityLevel: '新手上路', activityColor: '#999999', activityScore: 0, studentNo: '', role: 0 },
+      adminMenu: null
     });
   },
 
@@ -133,18 +144,8 @@ Page({
       confirmColor: '#FF4D4F',
       success: (res) => {
         if (res.confirm) {
-          // 清除登录态
-          wx.removeStorageSync('token');
-          this.setData({
-            userInfo: {
-              nickname: '',
-              avatar: '',
-              activityLevel: '新手上路',
-              activityColor: '#999999',
-              activityScore: 0,
-              studentNo: ''
-            }
-          });
+          getApp().clearSession();
+          this.resetUserInfo();
           wx.showToast({ title: '已退出登录', icon: 'none' });
         }
       }

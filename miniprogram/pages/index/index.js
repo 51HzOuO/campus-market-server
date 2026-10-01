@@ -38,9 +38,6 @@ Page({
     } catch (e) {
       // 默认值已设置
     }
-    this.loadPinnedPosts();
-    this.loadHotPosts();
-    this.loadPosts(true);
   },
 
   onPullDownRefresh() {

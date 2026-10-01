@@ -30,6 +30,7 @@ public class User {
 
     private String token;
 
+    /** 账号状态：0=正常，1=封禁（与用户管理页面一致）。 */
     private Integer status;
 
     /** 角色：0=普通用户 1=管理员 2=审核员 */

@@ -22,17 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns(
                         "/auth/login",       // 登录接口不需要 token
-                        "/post/list",        // 帖子列表不需要登录
-                        "/post/detail/**",   // 帖子详情不需要登录
-                        "/comment/list",     // 评论列表不需要登录
-                        "/errand/list",       // 跑腿列表不需要登录
-                        "/errand/detail/**",  // 跑腿详情不需要登录
-                        "/second-hand/list", // 二手列表不需要登录
-                        "/second-hand/detail/**", // 二手详情不需要登录
-                        "/club/list",        // 社团列表不需要登录
-                        "/club/detail/**",   // 社团详情不需要登录
-                        "/club/activity/list", // 活动列表不需要登录
-                        "/club/activity/detail/**", // 活动详情不需要登录
+                        "/error",            // 保留实际 HTTP 错误，避免被未登录错误覆盖
                         "/avatars/**",       // 头像图片不需要登录
                         "/uploads/**"        // 帖子图片不需要登录
                 );

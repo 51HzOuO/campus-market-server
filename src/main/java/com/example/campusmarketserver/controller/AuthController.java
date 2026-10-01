@@ -3,24 +3,15 @@ package com.example.campusmarketserver.controller;
 import com.example.campusmarketserver.common.Result;
 import com.example.campusmarketserver.entity.User;
 import com.example.campusmarketserver.service.UserService;
+import com.example.campusmarketserver.service.WechatLoginClient;
 import com.example.campusmarketserver.util.ActivityUtil;
 import com.example.campusmarketserver.util.AvatarUtil;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import java.security.cert.X509Certificate;
 
 @RestController
 @RequestMapping("/auth")
@@ -28,16 +19,11 @@ public class AuthController {
 
     private final UserService userService;
 
-    private final String appId;
-    private final String appSecret;
+    private final WechatLoginClient wechatLoginClient;
 
-    public AuthController(
-            UserService userService,
-            @Value("${wechat.app-id}") String appId,
-            @Value("${wechat.app-secret}") String appSecret) {
+    public AuthController(UserService userService, WechatLoginClient wechatLoginClient) {
         this.userService = userService;
-        this.appId = appId;
-        this.appSecret = appSecret;
+        this.wechatLoginClient = wechatLoginClient;
     }
 
     /**
@@ -45,12 +31,17 @@ public class AuthController {
      */
     @PostMapping("/login")
     public Result<Map<String, Object>> login(@RequestBody Map<String, String> params) {
-        String code = params.get("code");
+        String code = params == null ? null : params.get("code");
+        if (code == null || code.isBlank()) {
+            return Result.error(400, "缺少微信登录凭证，请重新点击登录");
+        }
 
         // 调用微信接口换 openid
-        String openid = getOpenidFromWechat(code);
-        if (openid == null) {
-            return Result.error(400, "微信登录失败");
+        final String openid;
+        try {
+            openid = wechatLoginClient.getOpenid(code);
+        } catch (WechatLoginClient.LoginException ex) {
+            return Result.error(ex.getCode(), ex.getMessage());
         }
 
         // 根据 openid 查找用户，不存在就创建
@@ -58,21 +49,28 @@ public class AuthController {
         if (user == null) {
             user = new User();
             user.setOpenid(openid);
-            user.setNickname("校园用户" + openid.substring(0, 6));
+            user.setNickname("校园用户" + openid.substring(0, Math.min(6, openid.length())));
             user.setAvatar("");
             user.setActivityScore(0);
-            user.setStatus(1);
+            user.setStatus(0);
             user.setRole(0);
             user.setCreateTime(LocalDateTime.now());
             user.setUpdateTime(LocalDateTime.now());
-            userService.save(user);
+            if (!userService.save(user)) {
+                return Result.error(503, "用户注册失败，请稍后重试");
+            }
+        }
+        if (Integer.valueOf(1).equals(user.getStatus())) {
+            return Result.error(403, "账号已被封禁，请联系管理员");
         }
 
         // 生成 token 并保存
         String token = UUID.randomUUID().toString().replace("-", "");
         user.setToken(token);
         user.setUpdateTime(LocalDateTime.now());
-        userService.updateById(user);
+        if (!userService.updateById(user)) {
+            return Result.error(503, "登录状态保存失败，请稍后重试");
+        }
 
         // 计算活跃度等级
         int score = user.getActivityScore() != null ? user.getActivityScore() : 0;
@@ -84,6 +82,8 @@ public class AuthController {
         data.put("userId", user.getId());
         data.put("nickname", user.getNickname());
         data.put("avatar", AvatarUtil.fullUrl(user.getAvatar()));
+        data.put("role", user.getRole() != null ? user.getRole() : 0);
+        data.put("status", user.getStatus() != null ? user.getStatus() : 0);
         data.put("activityScore", score);
         data.put("activityLevel", levelInfo.get("level"));
         data.put("activityColor", levelInfo.get("color"));
@@ -91,56 +91,4 @@ public class AuthController {
         return Result.success(data);
     }
 
-    /**
-     * 调用微信接口换 openid（忽略 SSL 证书校验）
-     */
-    private String getOpenidFromWechat(String code) {
-        try {
-            String urlStr = String.format(
-                "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",
-                appId, appSecret, code
-            );
-
-            // 忽略 SSL 证书校验
-            SSLContext sc = SSLContext.getInstance("TLS");
-            sc.init(null, new TrustManager[]{new X509TrustManager() {
-                public X509Certificate[] getAcceptedIssuers() { return null; }
-                public void checkClientTrusted(X509Certificate[] certs, String authType) { }
-                public void checkServerTrusted(X509Certificate[] certs, String authType) { }
-            }}, new java.security.SecureRandom());
-
-            URL url = new URL(urlStr);
-            HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-            conn.setSSLSocketFactory(sc.getSocketFactory());
-            conn.setHostnameVerifier((hostname, session) -> true);
-            conn.setRequestMethod("GET");
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-
-            String responseBody = response.toString();
-
-            // 检查有没有 errcode
-            if (responseBody.contains("\"errcode\"")) {
-                return null;
-            }
-
-            // 解析 openid
-            if (responseBody.contains("\"openid\"")) {
-                int start = responseBody.indexOf("\"openid\":\"") + 10;
-                int end = responseBody.indexOf("\"", start);
-                String openid = responseBody.substring(start, end);
-                return openid;
-            }
-            return null;
-        } catch (Exception e) {
-            System.err.println("微信登录请求失败");
-            return null;
-        }
-    }
 }

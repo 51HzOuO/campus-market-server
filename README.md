@@ -35,10 +35,15 @@ Import the repository root (the directory containing `project.config.json`) in
 WeChat Developer Tools. Its `miniprogramRoot` already points to `miniprogram/`,
 where the pages are registered in `app.json`. Replace the `appid` in
 `project.config.json` if this is a different Mini Program, then set the
-backend domain to the deployed service URL in `miniprogram/utils/request.js`.
+deployed service URL in `miniprogram/utils/config.js`. Add that host to the
+Mini Program request and upload-file legal-domain allowlists before release.
 Log in from the **我的** tab. The backend must have the environment variables
 configured and the module SQL executed before testing create, join, purchase,
 or order flows.
+
+The root `Dockerfile` uses a multi-stage build and runs Maven inside the image,
+so CloudBase can build directly from a clean Git checkout; no ignored
+`target/` directory or prebuilt JAR needs to be committed.
 
 ## GitHub Actions / deployment
 
