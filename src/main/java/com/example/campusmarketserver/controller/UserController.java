@@ -25,6 +25,8 @@ import java.util.UUID;
 @RequestMapping("/user")
 public class UserController {
 
+    private static final long MAX_AVATAR_BYTES = 5L * 1024 * 1024;
+
     private final UserService userService;
     private final PostService postService;
     private final LikeService likeService;
@@ -152,6 +154,9 @@ public class UserController {
         if (file.isEmpty()) {
             return Result.error(400, "文件不能为空");
         }
+        if (file.getSize() > MAX_AVATAR_BYTES) {
+            return Result.error(413, "头像不能超过 5MB");
+        }
 
         // 校验文件类型
         String originalFilename = file.getOriginalFilename();
@@ -161,6 +166,10 @@ public class UserController {
         }
         if (!ext.matches("\\.(jpg|jpeg|png|gif|webp)")) {
             return Result.error(400, "仅支持 jpg/png/gif/webp 格式的图片");
+        }
+        String contentType = file.getContentType() == null ? "" : file.getContentType().toLowerCase();
+        if (!contentType.matches("image/(jpeg|png|gif|webp)")) {
+            return Result.error(400, "图片格式与文件内容不匹配");
         }
 
         // 生成唯一文件名，保存到 /tmp/avatars/ 目录（云托管容器里可写）

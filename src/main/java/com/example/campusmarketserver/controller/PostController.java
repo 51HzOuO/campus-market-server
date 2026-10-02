@@ -50,6 +50,8 @@ public class PostController {
             @RequestParam(required = false) Integer module,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
+        page = Math.max(page, 1);
+        size = Math.min(Math.max(size, 1), 50);
         IPage<PostVO> result = postService.listPosts(page, size, module);
         return Result.success(result);
     }
@@ -62,6 +64,8 @@ public class PostController {
             @RequestParam String keyword,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int size) {
+        page = Math.max(page, 1);
+        size = Math.min(Math.max(size, 1), 50);
         if (keyword == null || keyword.trim().isEmpty()) {
             return Result.error(400, "关键词不能为空");
         }

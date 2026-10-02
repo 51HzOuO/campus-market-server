@@ -458,3 +458,25 @@
   font-weight: 300;
   line-height: 1;
 }
+
+/* Editorial campus palette: warm paper, ink and jade accents. */
+.page { background: #f4f1eb; color: #1e2925; }
+.nav-bar { background: rgba(244,241,235,.96); border-bottom: 1rpx solid #e6e0d5; }
+.school-name, .func-title, .hot-title, .post-title { color: #1e2925; }
+.search-pill { background: #fbfaf7; border: 1rpx solid #e5dfd3; }
+.func-grid { padding-top: 28rpx; }
+.func-card { border-radius: 10rpx; box-shadow: 0 8rpx 24rpx rgba(48,55,48,.06); }
+.func-card-0 { background: #e4efe9; }
+.func-card-1 { background: #f1eadb; }
+.func-card-2 { background: #e8edf0; }
+.func-card-3 { background: #eee7df; }
+.func-card-4 { background: #e7ece6; }
+.func-emoji { filter: saturate(.7); }
+.hot-section, .pinned-section { background: #fbfaf7; margin: 22rpx 24rpx 0; padding: 24rpx; border-radius: 10rpx; box-shadow: 0 6rpx 20rpx rgba(48,55,48,.05); }
+.cat-tabs { background: transparent; padding: 24rpx; margin-top: 8rpx; }
+.cat-tab { background: #ebe7df; color: #65706a; border-radius: 8rpx; }
+.cat-tab.active { background: #1d6b57; color: #fff; }
+.post-card { background: #fbfaf7; border: 1rpx solid #e9e3d8; border-radius: 10rpx; margin: 16rpx 24rpx 0; box-shadow: 0 5rpx 16rpx rgba(48,55,48,.04); }
+.post-content { color: #59645f; }
+.role-badge { border-radius: 6rpx; }
+.fab { background: #1d6b57; box-shadow: 0 8rpx 22rpx rgba(29,107,87,.26); }

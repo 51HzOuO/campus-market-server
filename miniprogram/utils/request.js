@@ -168,4 +168,20 @@ async function uploadImage(filePath, url = '/upload/image') {
   return data;
 }
 
-module.exports = { request, requestAsync, uploadImage, toAbsoluteUrl, BASE_URL };
+// Keep uploads fast without opening nine connections at once on mobile data.
+async function uploadImages(filePaths, url = '/upload/image', concurrency = 3) {
+  const paths = Array.isArray(filePaths) ? filePaths : [];
+  const results = new Array(paths.length);
+  let cursor = 0;
+  const worker = async () => {
+    while (cursor < paths.length) {
+      const index = cursor++;
+      results[index] = await uploadImage(paths[index], url);
+    }
+  };
+  const workers = Array.from({ length: Math.min(Math.max(concurrency, 1), paths.length) }, worker);
+  await Promise.all(workers);
+  return results;
+}
+
+module.exports = { request, requestAsync, uploadImage, uploadImages, toAbsoluteUrl, BASE_URL };

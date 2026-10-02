@@ -152,6 +152,26 @@ test('upload waits for login, uses direct domain, and parses JSON string', async
   assert.equal(h.uploads[0].header['Content-Type'], undefined);
 });
 
+test('batch image upload keeps selection order while limiting concurrency', async () => {
+  const h = harness({ login: () => {} });
+  const active = { value: 0, max: 0 };
+  h.wx.uploadFile = params => {
+    h.uploads.push(params);
+    active.value++;
+    active.max = Math.max(active.max, active.value);
+    setTimeout(() => {
+      active.value--;
+      params.success({ statusCode: 200, data: JSON.stringify({ code: 200, data: { url: '/' + params.filePath.split('/').pop() } }) });
+    }, params.filePath.endsWith('a.png') ? 10 : 1);
+  };
+  const pending = h.api.uploadImages(['a.png', 'b.png', 'c.png', 'd.png'], '/upload/image', 2);
+  await Promise.resolve();
+  h.loginCalls[0].success({ code: 'mock-code' });
+  const result = await pending;
+  assert.equal(active.max, 2);
+  assert.deepEqual(Array.from(result, item => item.url), ['/a.png', '/b.png', '/c.png', '/d.png']);
+});
+
 test('login errors preserve the backend reason and do not store a token', async () => {
   const h = harness({ request: p => p.success({ statusCode: 200, data: { code: 400, message: '微信 AppID 配置错误' } }) });
   let failure;

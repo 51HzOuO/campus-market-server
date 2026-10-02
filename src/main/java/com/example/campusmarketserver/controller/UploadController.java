@@ -14,6 +14,10 @@ import java.util.UUID;
 @RequestMapping("/upload")
 public class UploadController {
 
+    private static final long MAX_IMAGE_BYTES = 5L * 1024 * 1024;
+    private static final java.util.Set<String> ALLOWED_TYPES = java.util.Set.of(
+            "image/jpeg", "image/png", "image/gif", "image/webp");
+
     @Value("${upload.path:/tmp/uploads}")
     private String uploadPath;
 
@@ -24,17 +28,33 @@ public class UploadController {
     public Map<String, Object> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
         Map<String, Object> result = new HashMap<>();
 
+        if (file == null || file.isEmpty()) {
+            return error(400, "文件不能为空");
+        }
+        if (file.getSize() > MAX_IMAGE_BYTES) {
+            return error(413, "图片不能超过 5MB");
+        }
+        String contentType = file.getContentType() == null ? "" : file.getContentType().toLowerCase();
+        if (!ALLOWED_TYPES.contains(contentType)) {
+            return error(400, "仅支持 jpg/png/gif/webp 格式的图片");
+        }
+
         // 创建上传目录
         File dir = new File(uploadPath);
         if (!dir.exists()) {
-            dir.mkdirs();
+            if (!dir.mkdirs() && !dir.isDirectory()) {
+                return error(500, "上传目录不可用，请联系管理员");
+            }
         }
 
         // 生成文件名
         String originalFilename = file.getOriginalFilename();
-        String suffix = originalFilename != null && originalFilename.contains(".")
-                ? originalFilename.substring(originalFilename.lastIndexOf("."))
-                : ".jpg";
+        String suffix = switch (contentType) {
+            case "image/png" -> ".png";
+            case "image/gif" -> ".gif";
+            case "image/webp" -> ".webp";
+            default -> ".jpg";
+        };
         String filename = UUID.randomUUID().toString().replace("-", "") + suffix;
 
         // 保存文件
@@ -52,6 +72,14 @@ public class UploadController {
         data.put("fullUrl", fullUrl);
         result.put("data", data);
 
+        return result;
+    }
+
+    private static Map<String, Object> error(int code, String message) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("code", code);
+        result.put("message", message);
+        result.put("data", null);
         return result;
     }
 }

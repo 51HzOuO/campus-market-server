@@ -29,15 +29,15 @@
   ],
   "window": {
     "navigationBarTitleText": "校园集市",
-    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarBackgroundColor": "#f4f1eb",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#f5f5f5"
+    "backgroundColor": "#f4f1eb"
   },
   "tabBar": {
     "color": "#999999",
-    "selectedColor": "#07C160",
-    "backgroundColor": "#ffffff",
-    "borderStyle": "white",
+    "selectedColor": "#1d6b57",
+    "backgroundColor": "#fbfaf7",
+    "borderStyle": "black",
     "list": [
       {
         "pagePath": "pages/index/index",

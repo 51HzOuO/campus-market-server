@@ -1,4 +1,6 @@
-const { requestAsync, uploadImage, toAbsoluteUrl } = require('../../utils/request');
+const requestApi = require('../../utils/request');
+const { requestAsync, uploadImage, toAbsoluteUrl } = requestApi;
+const uploadImages = requestApi.uploadImages || ((paths, url) => Promise.all(paths.map(path => uploadImage(path, url))));
 const CATEGORIES = ['数码', '书籍', '生活用品', '服饰', '其他'];
 
 Page({
@@ -19,8 +21,8 @@ Page({
     this.setData({ submitting: true });
     try {
       const images = [];
-      for (const filePath of d.images) {
-        const image = await uploadImage(filePath);
+      const uploaded = await uploadImages(d.images, '/upload/image', 3);
+      for (const image of uploaded) {
         const url = image && (image.fullUrl || toAbsoluteUrl(image.url));
         if (!url) throw new Error('图片上传未返回有效地址，请重试');
         images.push(url);

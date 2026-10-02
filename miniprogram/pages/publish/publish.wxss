@@ -226,3 +226,15 @@
   color: #fff;
   background: #2DBE9A;
 }
+
+.page { background: #f4f1eb; }
+.nav-bar, .bottom-bar { background: rgba(251,250,247,.97); border-color: #e6e0d5; }
+.nav-title { color: #1e2925; }
+.section { background: #fbfaf7; margin: 16rpx 20rpx 0; border-radius: 10rpx; box-shadow: 0 5rpx 16rpx rgba(48,55,48,.04); }
+.section-label { color: #718078; letter-spacing: 1rpx; }
+.module-btn { background: #ebe7df; color: #65706a; border-radius: 8rpx; }
+.module-btn.selected { color: #1d6b57; background: #e4efe9; border-color: #1d6b57; }
+.title-input, .content-input { color: #1e2925; }
+.image-add { background: #f4f1eb; border-color: #c8d2cb; }
+.bottom-btn.active { background: #1d6b57; }
+.link { color: #1d6b57; }

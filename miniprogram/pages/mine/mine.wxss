@@ -113,3 +113,18 @@
   color: #FF4D4F;
   font-weight: 500;
 }
+
+.page { background: #f4f1eb; }
+.user-header { background: #1d6b57; padding: 54rpx 30rpx 46rpx; margin-bottom: 20rpx; }
+.user-avatar { border: 5rpx solid rgba(255,255,255,.7); background: #dce9e1; }
+.user-name, .user-id { color: #fff; }
+.user-id { opacity: .72; }
+.role-badge { background: rgba(255,255,255,.18) !important; color: #fff !important; border-radius: 8rpx; }
+.login-btn { background: #1d6b57; border-radius: 10rpx; box-shadow: 0 7rpx 18rpx rgba(29,107,87,.18); }
+.menu-list { margin: 0 24rpx 18rpx; border-radius: 10rpx; overflow: hidden; box-shadow: 0 5rpx 16rpx rgba(48,55,48,.05); }
+.menu-item { background: #fbfaf7; padding: 31rpx 26rpx; border-bottom-color: #eee8de; }
+.menu-label { color: #2d3934; }
+.menu-arrow { color: #a6afa9; }
+.admin-item { background: #e4efe9; }
+.admin-item .menu-label { color: #1d6b57; }
+.logout-btn { background: #fbfaf7; border-radius: 10rpx; color: #a24d44; }

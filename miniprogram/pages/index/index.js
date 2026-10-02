@@ -41,8 +41,7 @@ Page({
   },
 
   onPullDownRefresh() {
-    // 先加载置顶，完成后再加载列表，最后停止刷新动画
-    this.loadPinnedPosts();
+    // 帖子列表同时更新置顶内容，避免刷新时重复请求。
     this.loadPosts(true, function () {
       wx.stopPullDownRefresh();
     });
@@ -55,8 +54,7 @@ Page({
   },
 
   onShow() {
-    // 从其他页返回时刷新数据（如发帖页）
-    this.loadPinnedPosts();
+    // 从其他页返回时刷新数据（如发帖页）。帖子列表同时提供置顶内容，避免重复请求。
     this.loadHotPosts();
     this.loadPosts(true);
   },
@@ -100,7 +98,10 @@ Page({
   },
 
   loadPosts(refresh, callback) {
-    if (this.data.loading) return;
+    if (this.data.loading) {
+      if (typeof callback === 'function') callback();
+      return;
+    }
 
     const page = refresh ? 1 : this.data.page;
     const params = { page: page, size: this.data.size };
@@ -121,10 +122,15 @@ Page({
           const list = (pageData.records || [])
             .filter(p => p.isTop !== 1)
             .map(p => this.formatPost(p));
+          const pinned = (pageData.records || [])
+            .filter(p => p.isTop === 1)
+            .slice(0, 3)
+            .map(p => this.formatPost(p));
           const noMore = page >= pageData.pages;
 
           this.setData({
             posts: refresh ? list : this.data.posts.concat(list),
+            pinnedPosts: refresh ? pinned : this.data.pinnedPosts,
             page: page + 1,
             noMore: noMore,
             loading: false

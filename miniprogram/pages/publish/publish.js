@@ -1,4 +1,6 @@
-const { requestAsync, uploadImage, toAbsoluteUrl } = require('../../utils/request');
+const requestApi = require('../../utils/request');
+const { requestAsync, uploadImage, toAbsoluteUrl } = requestApi;
+const uploadImages = requestApi.uploadImages || ((paths, url) => Promise.all(paths.map(path => uploadImage(path, url))));
 
 const MODULES = ['跑腿代办', '二手售卖', '日常分享', '校友求助'];
 
@@ -136,9 +138,9 @@ Page({
     this.setData({ submitting: true });
 
     try {
+      const uploaded = await uploadImages(images, '/upload/image', 3);
       const uploadedImages = [];
-      for (const filePath of images) {
-        const image = await uploadImage(filePath);
+      for (const image of uploaded) {
         const url = image && (image.fullUrl || toAbsoluteUrl(image.url));
         if (!url) throw new Error('图片上传未返回有效地址，请重试');
         uploadedImages.push(url);

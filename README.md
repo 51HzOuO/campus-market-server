@@ -40,6 +40,11 @@ The new pages are available from the home screen: **跑腿代办**, **二手售�
 and **社团活动**. Use **我的** to open the auditor or administrator entry,
 then choose the business review or content management link.
 
+Uploaded images are currently stored under `/tmp/uploads` and `/tmp/avatars`
+inside the CloudBase container. They are validated and served immediately, but
+the container filesystem is ephemeral: configure CloudBase/COS object storage
+before production use if images must survive a service restart or redeploy.
+
 跑腿支付当前为演示模式：点击支付不会调用微信支付或产生扣款，会直接将
 订单标记为“交易成功（模拟支付）”。
 
