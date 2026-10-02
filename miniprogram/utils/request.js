@@ -173,14 +173,20 @@ async function uploadImages(filePaths, url = '/upload/image', concurrency = 3) {
   const paths = Array.isArray(filePaths) ? filePaths : [];
   const results = new Array(paths.length);
   let cursor = 0;
+  let failure = null;
   const worker = async () => {
-    while (cursor < paths.length) {
+    while (!failure && cursor < paths.length) {
       const index = cursor++;
-      results[index] = await uploadImage(paths[index], url);
+      try {
+        results[index] = await uploadImage(paths[index], url);
+      } catch (error) {
+        failure = error;
+      }
     }
   };
   const workers = Array.from({ length: Math.min(Math.max(concurrency, 1), paths.length) }, worker);
   await Promise.all(workers);
+  if (failure) throw failure;
   return results;
 }
 
