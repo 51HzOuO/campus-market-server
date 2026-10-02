@@ -1,6 +1,10 @@
 server:
   port: 8080
 
+app:
+  # Use your own HTTPS domain in production, not the CloudBase test hostname.
+  public-url: ${APP_PUBLIC_URL:${PUBLIC_API_URL:https://springboot-4xrc-316010-10-1490372189.sh.run.tcloudbase.com}}
+
 wechat:
   app-id: ${WX_APP_ID:${WECHAT_APP_ID:}}
   app-secret: ${WX_APP_SECRET:${WECHAT_APP_SECRET:}}

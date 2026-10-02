@@ -12,6 +12,7 @@ environment variables before starting it:
 | `DB_PASSWORD` | MySQL application user password |
 | `WX_APP_ID` | WeChat Mini Program app ID |
 | `WX_APP_SECRET` | WeChat Mini Program app secret |
+| `APP_PUBLIC_URL` | Your production HTTPS API domain, used in image/avatar URLs |
 | `WECHAT_API_URL` | Optional HTTPS `jscode2session` endpoint (defaults to WeChat) |
 
 With a CloudBase managed MySQL binding, the `prod` profile accepts
@@ -53,9 +54,12 @@ before production use if images must survive a service restart or redeploy.
 Import the repository root (the directory containing `project.config.json`) in
 WeChat Developer Tools. Its `miniprogramRoot` already points to `miniprogram/`,
 where the pages are registered in `app.json`. Replace the `appid` in
-`project.config.json` if this is a different Mini Program, then set the
-deployed service URL in `miniprogram/utils/request.js`. Add that host to the
-Mini Program request and upload-file legal-domain allowlists before release.
+`project.config.json` if this is a different Mini Program. Before an official
+release, map your own HTTPS domain to the service, set that same domain as
+`APP_PUBLIC_URL`, replace `BASE_URL` in `miniprogram/utils/request.js`, and add
+only that custom domain to the Mini Program `request`, `uploadFile`, and
+`downloadFile` legal-domain allowlists. The `*.sh.run.tcloudbase.com` address
+is for testing and should not be used as the production allowlist domain.
 Log in from the **我的** tab. The backend must have the environment variables
 configured and the module SQL executed before testing create, join, purchase,
 or order flows.

@@ -21,7 +21,7 @@ public class UploadController {
     @Value("${upload.path:/tmp/uploads}")
     private String uploadPath;
 
-    @Value("${upload.url:https://springboot-4xrc-316010-10-1490372189.sh.run.tcloudbase.com}")
+    @Value("${app.public-url:https://springboot-4xrc-316010-10-1490372189.sh.run.tcloudbase.com}")
     private String uploadUrl;
 
     @PostMapping("/image")
