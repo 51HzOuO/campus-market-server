@@ -7,6 +7,8 @@ Page({
     stats: {},
     users: [],
     posts: [],
+    currentUserId: null,
+    roleOptions: ['普通用户', '审核员'],
     currentTab: 0,
     loading: false,
     page: 1,
@@ -23,6 +25,8 @@ Page({
         navBarTotalHeight: statusBarHeight + 44
       });
     } catch (e) {}
+    var userInfo = wx.getStorageSync('userInfo') || {};
+    that.setData({ currentUserId: userInfo.id || userInfo.userId || null });
     that.loadStats();
   },
 
@@ -43,8 +47,9 @@ Page({
     wx.navigateBack({ delta: 1 });
   },
 
-  goModuleAdmin: function () {
-    wx.navigateTo({ url: '/pages/module-admin/module-admin' });
+  goModuleAdmin: function (e) {
+    var type = e && e.currentTarget && e.currentTarget.dataset.type || 'errand';
+    wx.navigateTo({ url: '/pages/module-admin/module-admin?type=' + type });
   },
 
   switchTab: function (e) {
@@ -89,7 +94,11 @@ Page({
       success: function (res) {
         if (res.statusCode === 200 && res.data && res.data.code === 200) {
           var pageData = res.data.data;
-          var list = pageData.records || [];
+          var list = (pageData.records || []).map(function (user) {
+            user.roleIndex = Number(user.role) === 2 ? 1 : 0;
+            user.canManage = Number(user.role) !== 1 && Number(user.id) !== Number(that.data.currentUserId);
+            return user;
+          });
           that.setData({
             users: refresh ? list : that.data.users.concat(list),
             page: page + 1,
@@ -143,6 +152,10 @@ Page({
     var userId = e.currentTarget.dataset.id;
     var idx = parseInt(e.currentTarget.dataset.idx);
     var user = this.data.users[idx];
+    if (!user || !user.canManage) {
+      wx.showToast({ title: '管理员账号不能操作封禁', icon: 'none' });
+      return;
+    }
     var action = user.status === 0 ? '封禁' : '解封';
 
     wx.showModal({
@@ -163,6 +176,28 @@ Page({
           });
         }
       }
+    });
+  },
+
+  changeRole: function (e) {
+    var idx = parseInt(e.currentTarget.dataset.idx);
+    var user = this.data.users[idx];
+    if (!user || !user.canManage) return;
+    var role = Number(e.detail.value) === 1 ? 2 : 0;
+    if (role === Number(user.role)) return;
+    request({
+      url: '/user/admin/update-role',
+      data: { userId: user.id, role: role },
+      method: 'POST',
+      success: function (res) {
+        if (res.statusCode === 200 && res.data && res.data.code === 200) {
+          wx.showToast({ title: '角色已更新', icon: 'success' });
+          this.loadUsers(true);
+        } else {
+          wx.showToast({ title: (res.data && res.data.message) || '角色修改失败', icon: 'none' });
+        }
+      }.bind(this),
+      fail: function () { wx.showToast({ title: '网络错误，请重试', icon: 'none' }); }
     });
   },
 

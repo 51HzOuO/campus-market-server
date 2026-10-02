@@ -37,7 +37,12 @@
       <text class="stat-num">{{stats.todayPosts || 0}}</text>
       <text class="stat-label">今日新增帖子</text>
     </view>
-    <view class="module-admin-entry" bindtap="goModuleAdmin">跑腿 / 二手 / 社团内容管理　›</view>
+    <view class="module-heading"><text>业务管理</text><text>选择一个模块进入</text></view>
+    <view class="module-links">
+      <view class="module-link market-link" bindtap="goModuleAdmin" data-type="market"><text class="module-icon">◆</text><text class="module-name">二手商品</text><text class="module-hint">商品上下架</text><text class="module-arrow">›</text></view>
+      <view class="module-link errand-link" bindtap="goModuleAdmin" data-type="errand"><text class="module-icon">↗</text><text class="module-name">跑腿订单</text><text class="module-hint">订单状态管理</text><text class="module-arrow">›</text></view>
+      <view class="module-link club-link" bindtap="goModuleAdmin" data-type="club"><text class="module-icon">✦</text><text class="module-name">社团内容</text><text class="module-hint">社团展示管理</text><text class="module-arrow">›</text></view>
+    </view>
   </view>
 
   <!-- 用户管理 -->
@@ -49,9 +54,11 @@
         <text class="user-meta">角色: {{item.role === 1 ? '管理员' : item.role === 2 ? '审核员' : '普通用户'}} | 状态: {{item.status === 0 ? '正常' : '已封禁'}}</text>
       </view>
       <view class="user-action">
-        <view class="btn-ban {{item.status === 0 ? 'ban' : 'unban'}}" bindtap="banUser" data-id="{{item.id}}" data-idx="{{idx}}">
+        <picker wx:if="{{item.canManage}}" class="role-picker" mode="selector" range="{{roleOptions}}" value="{{item.roleIndex}}" data-idx="{{idx}}" bindchange="changeRole"><view class="role-control">{{item.role === 2 ? '审核员' : '普通用户'}}⌄</view></picker>
+        <view wx:if="{{item.canManage}}" class="btn-ban {{item.status === 0 ? 'ban' : 'unban'}}" bindtap="banUser" data-id="{{item.id}}" data-idx="{{idx}}">
           {{item.status === 0 ? '封禁' : '解封'}}
         </view>
+        <text wx:else class="protected-label">管理员账号</text>
       </view>
     </view>
     <view class="loading-more" wx:if="{{loading}}">加载中...</view>

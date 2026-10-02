@@ -126,6 +126,14 @@ public class AdminController {
             return Result.error(404, "用户不存在");
         }
 
+        if (userId.equals(currentUserId)) {
+            return Result.error(400, "不能封禁管理员自己");
+        }
+
+        if (user.getRole() != null && user.getRole() == 1) {
+            return Result.error(400, "不能封禁管理员");
+        }
+
         // 切换封禁状态
         int newStatus = (user.getStatus() != null && user.getStatus() == 0) ? 1 : 0;
         user.setStatus(newStatus);

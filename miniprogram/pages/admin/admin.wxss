@@ -243,3 +243,20 @@
 .list-section { padding: 20rpx 24rpx; }
 .btn-ban.ban, .btn-delete { background: #b76650; }
 .btn-ban.unban, .btn-top.active { background: #1d6b57; }
+.module-heading { display: flex; align-items: baseline; justify-content: space-between; margin: 30rpx 0 16rpx; color: #1e2925; font-size: 32rpx; font-weight: 700; }
+.module-heading text:last-child { color: #9a8d79; font-size: 22rpx; font-weight: 400; }
+.module-links { display: flex; flex-wrap: wrap; gap: 16rpx; }
+.module-link { position: relative; width: calc((100% - 16rpx) / 2); min-height: 178rpx; box-sizing: border-box; padding: 22rpx; border-radius: 18rpx; overflow: hidden; box-shadow: 0 9rpx 22rpx rgba(48,55,48,.08); }
+.module-link:nth-child(3) { width: 100%; min-height: 142rpx; }
+.market-link { background: #f0e1cf; color: #754f33; }
+.errand-link { background: #dfece5; color: #1d6b57; }
+.club-link { background: #e5e4ef; color: #55527b; }
+.module-icon { display: block; font-size: 44rpx; opacity: .75; }
+.module-name { display: block; margin-top: 18rpx; font-size: 30rpx; font-weight: 700; }
+.module-hint { display: block; margin-top: 7rpx; font-size: 22rpx; opacity: .72; }
+.module-arrow { position: absolute; right: 20rpx; bottom: 16rpx; font-size: 38rpx; opacity: .55; }
+.role-picker { display: inline-block; margin-right: 10rpx; }
+.role-control { min-width: 112rpx; padding: 10rpx 12rpx; border: 1rpx solid #c9d7cf; border-radius: 9rpx; color: #1d6b57; background: #e4efe9; text-align: center; font-size: 21rpx; }
+.protected-label { color: #a08f7a; font-size: 21rpx; white-space: nowrap; }
+.user-action { display: flex; align-items: center; }
+.btn-ban { white-space: nowrap; }

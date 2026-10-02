@@ -482,7 +482,7 @@
 .fab { background: #1d6b57; box-shadow: 0 8rpx 22rpx rgba(29,107,87,.26); }
 
 /* Stable two-column rhythm on narrow phones. */
-.func-grid { display: flex; flex-direction: row; flex-wrap: wrap; padding: 28rpx 24rpx 4rpx; }
+.func-grid { display: flex; flex-direction: row; flex-wrap: wrap; gap: 0; padding: 28rpx 24rpx 4rpx; }
 .func-card { width: calc(50% - 8rpx); min-height: 178rpx; margin-bottom: 16rpx; padding: 24rpx 20rpx; }
 .func-card:nth-child(odd) { margin-right: 16rpx; }
 .func-title { font-size: 28rpx; }
