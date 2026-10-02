@@ -48,7 +48,7 @@ Page({
   },
 
   goModuleAdmin: function (e) {
-    var type = e && e.currentTarget && e.currentTarget.dataset.type || 'errand';
+    var type = e && e.currentTarget && e.currentTarget.dataset.type || 'post';
     wx.navigateTo({ url: '/pages/module-admin/module-admin?type=' + type });
   },
 

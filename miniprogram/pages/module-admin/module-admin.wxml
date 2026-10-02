@@ -5,8 +5,8 @@
   <view class="card" wx:for="{{items}}" wx:key="id">
     <view class="card-top"><text class="type-chip">{{types[typeIndex]}}</text><text class="status {{item.status === 0 || item.status === 3 || item.status === 6 ? 'offline' : 'online'}}">{{item.status === 0 || item.status === 3 || item.status === 6 ? '已下架' : '展示中'}}</text></view>
     <text class="title">{{item.title || item.name || '未命名内容'}}</text>
-    <text class="summary">{{item.description || item.content || '暂无补充说明'}}</text>
-    <view class="card-foot"><text class="record-id">记录 #{{item.id}}</text><button class="action" size="mini" data-item="{{item}}" bindtap="toggle">{{item.status === 0 || item.status === 3 || item.status === 6 ? '恢复展示' : '下架内容'}}</button></view>
+    <text class="summary">{{item.description || item.content || item.nickname || '暂无补充说明'}}</text>
+    <view class="card-foot"><text class="record-id">记录 #{{item.id}}</text><button wx:if="{{typeValues[typeIndex] !== 'post'}}" class="action" size="mini" data-item="{{item}}" bindtap="toggle">{{item.status === 0 || item.status === 3 || item.status === 6 ? '恢复展示' : '下架内容'}}</button><view wx:else class="post-actions"><button class="action" size="mini" data-item="{{item}}" bindtap="toggle">{{item.isTop === 1 ? '取消置顶' : '置顶'}}</button><button class="action danger-action" size="mini" data-id="{{item.id}}" bindtap="deletePost">删除</button></view></view>
   </view>
   <view class="empty" wx:if="{{!loading && items.length === 0}}">暂无内容</view>
 </view>

@@ -13,6 +13,7 @@ import com.example.campusmarketserver.util.AvatarUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +27,8 @@ import java.util.UUID;
 public class UserController {
 
     private static final long MAX_AVATAR_BYTES = 5L * 1024 * 1024;
+    @Value("${upload.avatar-path:/tmp/avatars}")
+    private String avatarUploadPath;
 
     private final UserService userService;
     private final PostService postService;
@@ -172,9 +175,9 @@ public class UserController {
             return Result.error(400, "图片格式与文件内容不匹配");
         }
 
-        // 生成唯一文件名，保存到 /tmp/avatars/ 目录（云托管容器里可写）
+        // 生成唯一文件名并保存到可配置目录。
         String fileName = UUID.randomUUID().toString().replace("-", "") + ext;
-        String dir = "/tmp/avatars";
+        String dir = avatarUploadPath;
         File dirFile = new File(dir);
         if (!dirFile.exists()) {
             dirFile.mkdirs();

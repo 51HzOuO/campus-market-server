@@ -483,8 +483,9 @@
 
 /* Stable two-column rhythm on narrow phones. */
 .func-grid { display: flex; flex-direction: row; flex-wrap: wrap; gap: 0; padding: 28rpx 24rpx 4rpx; }
-.func-card { width: calc(50% - 8rpx); min-height: 178rpx; margin-bottom: 16rpx; padding: 24rpx 20rpx; }
-.func-card:nth-child(odd) { margin-right: 16rpx; }
+.func-card { flex: 0 0 48%; width: 48%; min-height: 178rpx; margin: 0 2% 16rpx 0; padding: 24rpx 20rpx; }
+.func-card:nth-child(odd) { margin-right: 2%; }
+.func-card:nth-child(even) { margin-right: 0; }
 .func-title { font-size: 28rpx; }
 .func-desc { font-size: 22rpx; }
 .func-emoji { font-size: 58rpx; }

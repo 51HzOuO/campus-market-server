@@ -14,9 +14,9 @@
 
   <!-- Tab 栏 -->
   <view class="tab-bar">
-    <view class="tab-item {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-tab="0">数据统计</view>
+    <view class="tab-item {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-tab="0">数据管理</view>
     <view class="tab-item {{currentTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-tab="1">用户管理</view>
-    <view class="tab-item {{currentTab === 2 ? 'active' : ''}}" bindtap="switchTab" data-tab="2">帖子管理</view>
+    <view class="tab-item {{currentTab === 2 ? 'active' : ''}}" bindtap="switchTab" data-tab="2">业务管理</view>
   </view>
 
   <!-- 数据统计 -->
@@ -36,12 +36,6 @@
     <view class="stat-card">
       <text class="stat-num">{{stats.todayPosts || 0}}</text>
       <text class="stat-label">今日新增帖子</text>
-    </view>
-    <view class="module-heading"><text>业务管理</text><text>选择一个模块进入</text></view>
-    <view class="module-links">
-      <view class="module-link market-link" bindtap="goModuleAdmin" data-type="market"><text class="module-icon">◆</text><text class="module-name">二手商品</text><text class="module-hint">商品上下架</text><text class="module-arrow">›</text></view>
-      <view class="module-link errand-link" bindtap="goModuleAdmin" data-type="errand"><text class="module-icon">↗</text><text class="module-name">跑腿订单</text><text class="module-hint">订单状态管理</text><text class="module-arrow">›</text></view>
-      <view class="module-link club-link" bindtap="goModuleAdmin" data-type="club"><text class="module-icon">✦</text><text class="module-name">社团内容</text><text class="module-hint">社团展示管理</text><text class="module-arrow">›</text></view>
     </view>
   </view>
 
@@ -66,23 +60,15 @@
     <view class="empty" wx:if="{{!loading && users.length === 0}}">暂无用户</view>
   </view>
 
-  <!-- 帖子管理 -->
+  <!-- 业务管理 -->
   <view class="list-section" wx:if="{{currentTab === 2}}">
-    <view class="post-item" wx:for="{{posts}}" wx:key="id" wx:for-index="idx">
-      <view class="post-info">
-        <text class="post-title">{{item.title || '无标题'}}</text>
-        <text class="post-meta">{{item.nickname}} | {{item.isTop === 1 ? '已置顶' : '普通'}}</text>
-      </view>
-      <view class="post-actions">
-        <view class="btn-top {{item.isTop === 1 ? 'active' : ''}}" bindtap="topPost" data-id="{{item.id}}" data-idx="{{idx}}">
-          {{item.isTop === 1 ? '取消置顶' : '置顶'}}
-        </view>
-        <view class="btn-delete" bindtap="deletePost" data-id="{{item.id}}" data-idx="{{idx}}">删除</view>
-      </view>
+    <view class="module-heading"><text>业务管理</text><text>选择一个模块进入</text></view>
+    <view class="module-links">
+      <view class="module-link post-link" bindtap="goModuleAdmin" data-type="post"><text class="module-icon">✦</text><text class="module-name">帖子管理</text><text class="module-hint">置顶与删除</text><text class="module-arrow">›</text></view>
+      <view class="module-link market-link" bindtap="goModuleAdmin" data-type="market"><text class="module-icon">◆</text><text class="module-name">二手管理</text><text class="module-hint">商品上下架</text><text class="module-arrow">›</text></view>
+      <view class="module-link errand-link" bindtap="goModuleAdmin" data-type="errand"><text class="module-icon">↗</text><text class="module-name">跑腿管理</text><text class="module-hint">订单状态管理</text><text class="module-arrow">›</text></view>
+      <view class="module-link club-link" bindtap="goModuleAdmin" data-type="club"><text class="module-icon">◇</text><text class="module-name">社团管理</text><text class="module-hint">社团展示管理</text><text class="module-arrow">›</text></view>
     </view>
-    <view class="loading-more" wx:if="{{loading}}">加载中...</view>
-    <view class="loading-more" wx:if="{{noMore && posts.length > 0}}">— 没有更多了 —</view>
-    <view class="empty" wx:if="{{!loading && posts.length === 0}}">暂无帖子</view>
   </view>
 
 </view>
