@@ -2,8 +2,9 @@ server:
   port: 8080
 
 wechat:
-  app-id: ${WX_APP_ID}
-  app-secret: ${WX_APP_SECRET}
+  app-id: ${WX_APP_ID:${WECHAT_APP_ID:}}
+  app-secret: ${WX_APP_SECRET:${WECHAT_APP_SECRET:}}
+  api-url: ${WECHAT_API_URL:https://api.weixin.qq.com/sns/jscode2session}
 
 spring:
   application:

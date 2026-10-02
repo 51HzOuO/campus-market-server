@@ -12,6 +12,7 @@ environment variables before starting it:
 | `DB_PASSWORD` | MySQL application user password |
 | `WX_APP_ID` | WeChat Mini Program app ID |
 | `WX_APP_SECRET` | WeChat Mini Program app secret |
+| `WECHAT_API_URL` | Optional HTTPS `jscode2session` endpoint (defaults to WeChat) |
 
 With a CloudBase managed MySQL binding, the `prod` profile accepts
 `MYSQL_ADDRESS`, `MYSQL_USERNAME`, and `MYSQL_PASSWORD`; it defaults to the
@@ -24,6 +25,12 @@ For local development, copy `.env.example` to an untracked `.env` file and
 export the values in your shell. Docker deployments can pass the same values
 with `--env-file` or with individual `-e` options. The application intentionally
 fails to start when a required variable is missing.
+
+If `/auth/login` returns `502` and the server log reports `WeChat login service
+request failed`, the deployed service cannot reach the WeChat API. Check the
+CloudBase service's outbound DNS/HTTPS access, or set `WECHAT_API_URL` to an
+approved HTTPS proxy forwarding the same query parameters. Wrong credentials
+are reported separately as a configuration mismatch.
 
 Execute [docs/module-schema.sql](docs/module-schema.sql) once in the same
 MySQL database before opening the new pages. New business content is created

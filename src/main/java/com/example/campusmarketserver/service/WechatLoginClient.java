@@ -8,6 +8,7 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
+import org.springframework.web.util.UriComponentsBuilder;
 import tools.jackson.core.JacksonException;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
@@ -23,17 +24,24 @@ public class WechatLoginClient {
     private final RestClient client;
     private final String appId;
     private final String appSecret;
+    private final String apiUrl;
 
     @Autowired
     public WechatLoginClient(@Value("${wechat.app-id}") String appId,
-                             @Value("${wechat.app-secret}") String appSecret) {
-        this(createClient(), appId, appSecret);
+                             @Value("${wechat.app-secret}") String appSecret,
+                             @Value("${wechat.api-url:https://api.weixin.qq.com/sns/jscode2session}") String apiUrl) {
+        this(createClient(), appId, appSecret, apiUrl);
     }
 
     WechatLoginClient(RestClient client, String appId, String appSecret) {
+        this(client, appId, appSecret, "https://api.weixin.qq.com/sns/jscode2session");
+    }
+
+    WechatLoginClient(RestClient client, String appId, String appSecret, String apiUrl) {
         this.client = client;
         this.appId = appId;
         this.appSecret = appSecret;
+        this.apiUrl = apiUrl;
     }
 
     private static RestClient createClient() {
@@ -50,15 +58,26 @@ public class WechatLoginClient {
         if (appId == null || appId.isBlank() || appSecret == null || appSecret.isBlank()) {
             throw new LoginException(503, "服务端未配置微信登录，请配置 WX_APP_ID 和 WX_APP_SECRET");
         }
+        if (apiUrl == null || apiUrl.isBlank()) {
+            throw new LoginException(503, "服务端未配置微信登录接口地址");
+        }
 
         final String response;
         try {
-            response = client.get().uri(
-                    "https://api.weixin.qq.com/sns/jscode2session?appid={appid}&secret={secret}&js_code={code}&grant_type=authorization_code",
-                    appId, appSecret, code.trim()).retrieve().body(String.class);
+            var uri = UriComponentsBuilder.fromUriString(apiUrl)
+                    .queryParam("appid", appId)
+                    .queryParam("secret", appSecret)
+                    .queryParam("js_code", code.trim())
+                    .queryParam("grant_type", "authorization_code")
+                    .build().encode().toUri();
+            response = client.get().uri(uri).retrieve().body(String.class);
         } catch (RestClientException ex) {
             // The exception's URL can contain appSecret and code; never log it.
-            log.warn("WeChat login service request failed");
+            Throwable cause = ex;
+            while (cause.getCause() != null && cause.getCause() != cause) cause = cause.getCause();
+            // Do not log the exception message: RestClient may include the full
+            // upstream URL or response body, both of which can contain secrets.
+            log.warn("WeChat login service request failed ({})", cause.getClass().getSimpleName());
             throw new LoginException(502, "暂时无法连接微信登录服务，请稍后重试");
         }
 
