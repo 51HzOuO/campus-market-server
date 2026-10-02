@@ -1,4 +1,4 @@
-const { BASE_URL, requestAsync } = require('./utils/request');
+const { BASE_URL, CLOUD_ENV_ID, requestAsync } = require('./utils/request');
 
 App({
   globalData: { baseUrl: BASE_URL, userInfo: null, loginError: '' },
@@ -6,6 +6,9 @@ App({
   _sessionVersion: 0,
 
   onLaunch() {
+    if (wx.cloud && typeof wx.cloud.init === 'function') {
+      wx.cloud.init({ env: CLOUD_ENV_ID, traceUser: true });
+    }
     this.globalData.userInfo = wx.getStorageSync('userInfo') || null;
     this.ensureLogin().catch(error => { this.globalData.loginError = error.message; });
   },

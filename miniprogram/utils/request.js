@@ -2,6 +2,8 @@
 // cannot omit a separate config module needed by app.js.
 const BASE_URL = 'https://springboot-4xrc-316010-10-1490372189.sh.run.tcloudbase.com';
 const REQUEST_TIMEOUT = 20000;
+const CLOUD_ENV_ID = 'prod-d9g22ewvw948428fc';
+const CLOUD_SERVICE = 'springboot-4xrc-041';
 
 function toAbsoluteUrl(path) {
   if (!path) return '';
@@ -90,15 +92,20 @@ async function perform(options, uploadPath) {
     const raw = await new Promise((resolve, reject) => {
       const header = Object.assign({}, options.header || {});
       if (token) header.Authorization = 'Bearer ' + token;
-      const params = {
-        url: toAbsoluteUrl(options.url), timeout: REQUEST_TIMEOUT, header,
-        success: resolve, fail: failure => reject(networkError(failure))
-      };
+      const done = { success: resolve, fail: failure => reject(networkError(failure)) };
       if (uploadPath) {
-        wx.uploadFile(Object.assign(params, { filePath: uploadPath, name: 'file' }));
+        wx.uploadFile(Object.assign({ url: toAbsoluteUrl(options.url), timeout: REQUEST_TIMEOUT, header }, done,
+          { filePath: uploadPath, name: 'file' }));
+      } else if (wx.cloud && typeof wx.cloud.callContainer === 'function') {
+        wx.cloud.callContainer(Object.assign({
+          config: { env: CLOUD_ENV_ID }, path: options.url,
+          method: options.method || 'GET', data: options.data || {},
+          header: Object.assign({}, header, { 'X-WX-SERVICE': CLOUD_SERVICE })
+        }, done));
       } else {
         header['Content-Type'] = 'application/json';
-        wx.request(Object.assign(params, { method: options.method || 'GET', data: options.data || {} }));
+        wx.request(Object.assign({ url: toAbsoluteUrl(options.url), timeout: REQUEST_TIMEOUT, header,
+          method: options.method || 'GET', data: options.data || {} }, done));
       }
     });
     const res = normalizeResponse(raw);
@@ -190,4 +197,4 @@ async function uploadImages(filePaths, url = '/upload/image', concurrency = 3) {
   return results;
 }
 
-module.exports = { request, requestAsync, uploadImage, uploadImages, toAbsoluteUrl, BASE_URL };
+module.exports = { request, requestAsync, uploadImage, uploadImages, toAbsoluteUrl, BASE_URL, CLOUD_ENV_ID, CLOUD_SERVICE };

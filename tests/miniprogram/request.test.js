@@ -29,6 +29,7 @@ function harness(options = {}) {
         else ok(params, []);
       });
     },
+    cloud: options.cloud ? { callContainer: options.cloud } : undefined,
     uploadFile: params => {
       uploads.push(params);
       queueMicrotask(() => {
@@ -150,6 +151,19 @@ test('upload waits for login, uses direct domain, and parses JSON string', async
   assert.equal(h.uploads[0].url, domain + '/upload/image');
   assert.equal(h.uploads[0].header.Authorization, 'Bearer new-token');
   assert.equal(h.uploads[0].header['Content-Type'], undefined);
+});
+
+test('experience builds use CloudBase container calls for API requests', async () => {
+  const calls = [];
+  const h = harness({ cloud: params => {
+    calls.push(params);
+    queueMicrotask(() => params.success({ statusCode: 200, data: { code: 200, data: [] } }));
+  } });
+  await h.api.requestAsync({ url: '/post/list', data: { page: 1 } });
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].config.env, 'prod-d9g22ewvw948428fc');
+  assert.equal(calls[0].path, '/post/list');
+  assert.equal(calls[0].header['X-WX-SERVICE'], 'springboot-4xrc-041');
 });
 
 test('batch image upload keeps selection order while limiting concurrency', async () => {

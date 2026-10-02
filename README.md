@@ -60,6 +60,10 @@ release, map your own HTTPS domain to the service, set that same domain as
 only that custom domain to the Mini Program `request`, `uploadFile`, and
 `downloadFile` legal-domain allowlists. The `*.sh.run.tcloudbase.com` address
 is for testing and should not be used as the production allowlist domain.
+Experience builds use `wx.cloud.callContainer` with the CloudBase environment
+and service configured in `miniprogram/utils/request.js`, so the temporary
+container hostname is not used by ordinary API requests. File uploads still
+use the `uploadFile` path until object-storage upload is configured.
 Log in from the **我的** tab. The backend must have the environment variables
 configured and the module SQL executed before testing create, join, purchase,
 or order flows.
