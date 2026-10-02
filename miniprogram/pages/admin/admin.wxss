@@ -229,3 +229,17 @@
   font-size: 28rpx;
 }
 .module-admin-entry{margin:20rpx 24rpx;padding:26rpx;background:#eafaf1;color:#07c160;border-radius:12rpx;font-size:28rpx}
+.page { background: #f4f1eb; color: #1e2925; }
+.nav-bar { background: rgba(244,241,235,.97); box-shadow: none; border-bottom: 1rpx solid #e6e0d5; }
+.nav-title { color: #1e2925; font-weight: 700; }
+.tab-bar { margin: 18rpx 24rpx 0; padding: 6rpx; border: 1rpx solid #e4ddd1; border-radius: 14rpx; background: #fbfaf7; }
+.tab-item { padding: 20rpx 0; color: #8b948e; }
+.tab-item.active { color: #1d6b57; }
+.tab-item.active::after { background: #1d6b57; }
+.stats-section { padding: 24rpx; }
+.stat-card, .user-item, .post-item { background: #fbfaf7; border: 1rpx solid #e9e3d8; border-radius: 14rpx; box-shadow: 0 7rpx 18rpx rgba(48,55,48,.05); }
+.stat-num { color: #1d6b57; }
+.module-admin-entry { margin: 20rpx 0; padding: 28rpx; border-radius: 14rpx; background: #1d6b57; color: #fff; box-shadow: 0 8rpx 20rpx rgba(29,107,87,.18); }
+.list-section { padding: 20rpx 24rpx; }
+.btn-ban.ban, .btn-delete { background: #b76650; }
+.btn-ban.unban, .btn-top.active { background: #1d6b57; }

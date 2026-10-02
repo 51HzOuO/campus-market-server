@@ -1,1 +1,9 @@
 .page{min-height:100vh;background:#f5f6f8;padding:28rpx}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:24rpx}.title{font-size:40rpx;font-weight:700}.card{background:#fff;border-radius:16rpx;padding:28rpx;margin-bottom:18rpx}.name{font-size:34rpx;font-weight:600}.desc{color:#666;font-size:27rpx;margin-top:12rpx}.meta{color:#999;font-size:24rpx;margin-top:16rpx}.empty{text-align:center;color:#999;padding:120rpx 0}
+.page { background: #f4f1eb; padding: 34rpx 20rpx; color: #1e2925; }
+.top { margin: 0 4rpx 28rpx; }
+.title { color: #1e2925; font-size: 42rpx; letter-spacing: 1rpx; }
+.top button { margin: 0; border-radius: 24rpx; background: #1d6b57; font-size: 24rpx; }
+.card { background: #fbfaf7; border: 1rpx solid #e9e3d8; border-radius: 14rpx; padding: 28rpx; box-shadow: 0 8rpx 22rpx rgba(48,55,48,.06); }
+.name { color: #1e2925; }
+.desc { color: #65706a; line-height: 1.55; }
+.meta { color: #a08f7a; }

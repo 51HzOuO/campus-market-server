@@ -1,13 +1,12 @@
 const { request } = require('../../utils/request');
 
-const CATEGORIES = ['最新', '跑腿代办', '二手售卖', '日常分享', '校友求助'];
+const CATEGORIES = ['最新', '跑腿代办', '二手售卖', '日常分享'];
 
 const FUNC_ENTRIES = [
   { title: '跑腿代办', desc: '帮取快递 代办小事', icon: '🚴', module: 0 },
   { title: '二手售卖', desc: '闲置物品 低价转让', icon: '🛒', module: 1 },
   { title: '日常分享', desc: '校园生活 随手分享', icon: '🌟', module: 2 },
-  { title: '社团活动', desc: '加入社团 参加活动', icon: '🎓', module: 4 },
-  { title: '校友求助', desc: '问题咨询 经验求助', icon: '🤝', module: 3 }
+  { title: '社团活动', desc: '加入社团 参加活动', icon: '🎓', module: 4 }
 ];
 
 Page({

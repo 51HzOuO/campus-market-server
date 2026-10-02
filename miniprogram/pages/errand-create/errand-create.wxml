@@ -1,7 +1,7 @@
 <view class="page">
   <view class="form-card">
     <view class="label">需求标题</view>
-    <input class="input" maxlength="80" placeholder="例如：帮我取一份快递" value="{{title}}" data-field="title" bindinput="input" />
+    <input class="input title-input" maxlength="80" placeholder="例如：帮我取一份快递" value="{{title}}" data-field="title" bindinput="input" />
 
     <view class="label">需求说明</view>
     <textarea class="textarea" maxlength="1000" placeholder="请说明物品、时间等具体要求" value="{{description}}" data-field="description" bindinput="input"></textarea>

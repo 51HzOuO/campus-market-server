@@ -1,9 +1,12 @@
 <view class="page">
-  <view class="header"><text bindtap="goBack">‹</text><text>业务内容管理</text><view></view></view>
-  <picker mode="selector" range="{{types}}" value="{{typeIndex}}" bindchange="changeType"><view class="picker">{{types[typeIndex]}}　⌄</view></picker>
+  <view class="header"><view class="back" bindtap="goBack">‹</view><view><text class="eyebrow">ADMIN CONSOLE</text><text class="header-title">业务内容管理</text></view><view class="header-mark">◆</view></view>
+  <view class="intro">统一管理二手商品、跑腿订单与校园社团，让内容保持清爽可信。</view>
+  <picker mode="selector" range="{{types}}" value="{{typeIndex}}" bindchange="changeType"><view class="picker"><text class="picker-label">当前模块</text><text class="picker-value">{{types[typeIndex]}}</text><text class="picker-arrow">⌄</text></view></picker>
   <view class="card" wx:for="{{items}}" wx:key="id">
-    <view class="row"><text class="title">{{item.title || '未命名内容'}}</text><text class="status">状态 {{item.status}}</text></view>
-    <view class="actions"><button size="mini" data-item="{{item}}" bindtap="toggle">{{item.status === 0 || item.status === 3 || item.status === 6 ? '恢复' : '下架'}}</button></view>
+    <view class="card-top"><text class="type-chip">{{types[typeIndex]}}</text><text class="status {{item.status === 0 || item.status === 3 || item.status === 6 ? 'offline' : 'online'}}">{{item.status === 0 || item.status === 3 || item.status === 6 ? '已下架' : '展示中'}}</text></view>
+    <text class="title">{{item.title || item.name || '未命名内容'}}</text>
+    <text class="summary">{{item.description || item.content || '暂无补充说明'}}</text>
+    <view class="card-foot"><text class="record-id">记录 #{{item.id}}</text><button class="action" size="mini" data-item="{{item}}" bindtap="toggle">{{item.status === 0 || item.status === 3 || item.status === 6 ? '恢复展示' : '下架内容'}}</button></view>
   </view>
   <view class="empty" wx:if="{{!loading && items.length === 0}}">暂无内容</view>
 </view>

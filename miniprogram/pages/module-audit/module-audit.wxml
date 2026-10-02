@@ -1,12 +1,14 @@
 <view class="page">
-  <view class="header"><text bindtap="goBack">‹</text><text>业务审核</text><view></view></view>
-  <picker mode="selector" range="{{types}}" value="{{typeIndex}}" bindchange="changeType"><view class="picker">{{types[typeIndex]}}　⌄</view></picker>
+  <view class="header"><view class="back" bindtap="goBack">‹</view><view><text class="eyebrow">REVIEW DESK</text><text class="header-title">业务审核</text></view><view class="header-mark">✦</view></view>
+  <view class="intro">逐条确认新内容，给校园社区保留真实、有用且友好的信息。</view>
+  <picker mode="selector" range="{{types}}" value="{{typeIndex}}" bindchange="changeType"><view class="picker"><text class="picker-label">审核队列</text><text class="picker-value">{{types[typeIndex]}}</text><text class="picker-arrow">⌄</text></view></picker>
   <view class="loading" wx:if="{{loading}}">加载中...</view>
   <view class="card" wx:for="{{items}}" wx:key="id">
-    <view class="title">{{item.title || '未命名内容'}}</view>
-    <view class="meta">{{item.description || '暂无描述'}}</view>
-    <view class="time">{{item.createTime}}</view>
-    <view class="actions"><button size="mini" type="primary" data-id="{{item.id}}" data-status="1" bindtap="review">通过</button><button size="mini" type="warn" data-id="{{item.id}}" data-status="2" bindtap="review">驳回</button></view>
+    <view class="card-top"><text class="type-chip">{{types[typeIndex]}}</text><text class="record-id">#{{item.id}}</text></view>
+    <view class="title">{{item.title || item.name || '未命名内容'}}</view>
+    <view class="meta">{{item.description || item.content || '暂无描述'}}</view>
+    <view class="time">提交时间 · {{item.createTime || '刚刚'}}</view>
+    <view class="actions"><button class="approve" size="mini" data-id="{{item.id}}" data-status="1" bindtap="review">通过审核</button><button class="reject" size="mini" data-id="{{item.id}}" data-status="2" bindtap="review">驳回</button></view>
   </view>
   <view class="empty" wx:if="{{!loading && items.length === 0}}">暂无待审核内容</view>
 </view>

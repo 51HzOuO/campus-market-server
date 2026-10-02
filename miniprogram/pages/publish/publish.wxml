@@ -15,7 +15,7 @@
   <view style="height:{{navBarTotalHeight}}px"></view>
 
   <!-- ========== 模块选择 ========== -->
-  <view class="section">
+  <view class="section section-hero">
     <view class="section-label">选择模块</view>
     <view class="module-row">
       <view
@@ -29,7 +29,8 @@
   </view>
 
   <!-- ========== 标题输入 ========== -->
-  <view class="section">
+  <view class="section field-section">
+    <view class="section-label">标题</view>
     <input
       class="title-input"
       placeholder="请输入标题"
@@ -41,7 +42,8 @@
   </view>
 
   <!-- ========== 内容输入 ========== -->
-  <view class="section">
+  <view class="section field-section">
+    <view class="section-label">内容</view>
     <textarea
       class="content-input"
       placeholder="分享你的校园生活..."

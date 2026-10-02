@@ -25,7 +25,7 @@
     <!-- 项目介绍 -->
     <view class="card">
       <view class="card-title">项目介绍</view>
-      <view class="card-content">校园集市是一个专为在校师生打造的校园生活服务平台。我们致力于为同学们提供便捷、安全的二手交易、跑腿代办、日常分享和校友求助等服务，让校园生活更加便利和精彩。</view>
+      <view class="card-content">校园集市是一个专为在校师生打造的校园生活服务平台，提供便捷、安全的二手交易、跑腿代办、社团活动和日常分享服务。</view>
     </view>
 
     <!-- 核心功能 -->
@@ -45,8 +45,8 @@
           <text class="feature-text">日常分享 - 校园生活、随手分享</text>
         </view>
         <view class="feature-item">
-          <text class="feature-icon">🤝</text>
-          <text class="feature-text">校友求助 - 问题咨询、经验求助</text>
+          <text class="feature-icon">🎓</text>
+          <text class="feature-text">社团活动 - 发现同好、参与活动</text>
         </view>
       </view>
     </view>

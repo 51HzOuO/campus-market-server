@@ -1,6 +1,6 @@
 const { request } = require('../../utils/request');
 
-const MODULE_LABELS = ['跑腿代办', '二手售卖', '日常分享', '校友求助'];
+const MODULE_LABELS = ['跑腿代办', '二手售卖', '日常分享'];
 
 Page({
   data: {

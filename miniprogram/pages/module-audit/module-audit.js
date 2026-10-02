@@ -1,7 +1,7 @@
 const { request } = require('../../utils/request');
 
 Page({
-  data: { types: ['跑腿订单', '二手商品', '社团申请', '社团活动'], typeValues: ['errand', 'market', 'club', 'activity'], typeIndex: 0, items: [], loading: false },
+  data: { types: ['跑腿订单', '二手商品', '社团申请'], typeValues: ['errand', 'market', 'club'], typeIndex: 0, items: [], loading: false },
   onLoad() { this.load(); },
   changeType(e) { this.setData({ typeIndex: Number(e.detail.value), items: [] }); this.load(); },
   load() {

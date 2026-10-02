@@ -2,7 +2,7 @@ const requestApi = require('../../utils/request');
 const { requestAsync, uploadImage, toAbsoluteUrl } = requestApi;
 const uploadImages = requestApi.uploadImages || ((paths, url) => Promise.all(paths.map(path => uploadImage(path, url))));
 
-const MODULES = ['跑腿代办', '二手售卖', '日常分享', '校友求助'];
+const MODULES = ['跑腿代办', '二手售卖', '日常分享'];
 
 Page({
   data: {

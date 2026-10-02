@@ -238,3 +238,12 @@
 .image-add { background: #f4f1eb; border-color: #c8d2cb; }
 .bottom-btn.active { background: #1d6b57; }
 .link { color: #1d6b57; }
+
+.section { width: auto; margin: 16rpx 20rpx 0; padding: 30rpx 28rpx; }
+.section-hero { margin-top: 0; }
+.field-section { overflow: hidden; }
+.title-input, .content-input { display: block; width: 100%; box-sizing: border-box; padding: 0; }
+.title-input { min-height: 84rpx; line-height: 1.45; padding: 20rpx 0; }
+.content-input { padding: 8rpx 0; }
+.module-row { width: 100%; display: flex; flex-direction: row; flex-wrap: wrap; }
+.module-btn { flex: 1 1 30%; min-width: 170rpx; text-align: center; }
