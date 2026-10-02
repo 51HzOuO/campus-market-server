@@ -163,7 +163,7 @@ test('experience builds use CloudBase container calls for API requests', async (
   assert.equal(calls.length, 1);
   assert.equal(calls[0].config.env, 'prod-d9g22ewvw948428fc');
   assert.equal(calls[0].path, '/post/list');
-  assert.equal(calls[0].header['X-WX-SERVICE'], 'springboot-4xrc-041');
+  assert.equal(calls[0].header['X-WX-SERVICE'], 'springboot-4xrc');
 });
 
 test('batch image upload keeps selection order while limiting concurrency', async () => {

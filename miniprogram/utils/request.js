@@ -3,7 +3,8 @@
 const BASE_URL = 'https://springboot-4xrc-316010-10-1490372189.sh.run.tcloudbase.com';
 const REQUEST_TIMEOUT = 20000;
 const CLOUD_ENV_ID = 'prod-d9g22ewvw948428fc';
-const CLOUD_SERVICE = 'springboot-4xrc-041';
+// CloudBase service name is springboot-4xrc; 041 is only the deployed version.
+const CLOUD_SERVICE = 'springboot-4xrc';
 
 function toAbsoluteUrl(path) {
   if (!path) return '';
