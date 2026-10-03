@@ -1,1 +1,60 @@
-.post-actions { display: flex; gap: 10rpx; }.danger-action { background: #b76650; }
+.page { min-height: 100vh; box-sizing: border-box; padding: 0 24rpx 72rpx; color: #1e2925; background: #f4f1eb; }
+.hero { position: relative; overflow: hidden; margin: 0 -24rpx 24rpx; padding: 28rpx 30rpx 38rpx; color: #f9f7f1; background: #173e36; }
+.hero-nav { display: flex; align-items: center; min-height: 72rpx; }
+.back-button { width: 64rpx; height: 64rpx; color: #fff; font-size: 58rpx; font-weight: 300; line-height: 54rpx; }
+.hero-caption { flex: 1; color: rgba(255,255,255,.68); font-size: 19rpx; letter-spacing: 3rpx; }
+.hero-count { padding: 8rpx 16rpx; border: 1rpx solid rgba(255,255,255,.28); border-radius: 30rpx; color: #fff; font-size: 21rpx; }
+.hero-title { position: relative; z-index: 1; display: block; margin-top: 28rpx; font-size: 48rpx; font-weight: 700; }
+.hero-subtitle { position: relative; z-index: 1; display: block; max-width: 560rpx; margin-top: 12rpx; color: rgba(255,255,255,.76); font-size: 24rpx; line-height: 1.55; }
+.hero-accent { position: absolute; top: 84rpx; right: -46rpx; width: 220rpx; height: 220rpx; border: 1rpx solid rgba(224,187,131,.35); border-radius: 50%; }
+.hero-accent::after { position: absolute; top: 30rpx; left: 30rpx; width: 158rpx; height: 158rpx; border: 1rpx solid rgba(224,187,131,.2); border-radius: 50%; content: ''; }
+.module-market .hero { background: #66462e; }
+.module-errand .hero { background: #24564a; }
+.module-club .hero { background: #454563; }
+.module-switch { display: flex; padding: 7rpx; margin-bottom: 28rpx; border: 1rpx solid #e6dfd4; border-radius: 14rpx; background: #fbfaf7; }
+.switch-item { flex: 1; padding: 15rpx 2rpx; border-radius: 10rpx; color: #829087; text-align: center; font-size: 22rpx; white-space: nowrap; }
+.switch-item.active { color: #fff; background: #1d6b57; box-shadow: 0 4rpx 12rpx rgba(29,107,87,.2); }
+.list-heading { display: flex; align-items: baseline; justify-content: space-between; margin: 0 2rpx 16rpx; color: #25332d; font-size: 29rpx; font-weight: 700; }
+.list-heading text + text { color: #a49b8e; font-size: 21rpx; font-weight: 400; }
+.post-card, .market-card, .errand-card, .club-card { overflow: hidden; margin-bottom: 18rpx; border: 1rpx solid #e9e2d7; border-radius: 15rpx; background: #fbfaf7; box-shadow: 0 8rpx 24rpx rgba(48,55,48,.055); }
+.post-card, .errand-card { padding: 25rpx; }
+.card-top, .post-card-top { display: flex; align-items: center; justify-content: space-between; }
+.item-index { color: #a49a8b; font-size: 20rpx; letter-spacing: 1rpx; }
+.state-pill { padding: 7rpx 14rpx; border-radius: 24rpx; color: #7b735f; background: #eee9dd; font-size: 21rpx; white-space: nowrap; }
+.state-pill.highlight { color: #8a6036; background: #f3e4ce; }
+.item-title { display: block; margin-top: 17rpx; color: #202e28; font-size: 31rpx; font-weight: 700; line-height: 1.45; word-break: break-all; }
+.item-copy { display: block; margin-top: 9rpx; color: #758078; font-size: 24rpx; line-height: 1.55; display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.item-meta, .market-meta, .errand-meta, .club-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 18rpx; color: #a0978a; font-size: 21rpx; }
+.item-actions { display: flex; gap: 12rpx; margin-top: 22rpx; padding-top: 18rpx; border-top: 1rpx solid #eee8de; }
+.item-actions button, .primary-action { margin: 0; border-radius: 9rpx; font-size: 22rpx; }
+.secondary-action { flex: 1; color: #1d6b57; background: #e4efe9; }
+.danger-action { flex: 1; color: #9b5141; background: #f3e4dc; }
+.market-card { display: flex; min-height: 234rpx; padding: 16rpx; }
+.market-cover { flex: 0 0 212rpx; width: 212rpx; height: 212rpx; border-radius: 11rpx; background: #eee8de; }
+.cover-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #846b4e; }
+.cover-empty text:first-child { font-size: 25rpx; font-weight: 700; }
+.cover-empty text:last-child { margin-top: 8rpx; font-size: 15rpx; letter-spacing: 2rpx; opacity: .65; }
+.market-info { flex: 1; min-width: 0; padding: 4rpx 0 2rpx 18rpx; }
+.market-info .item-title { margin-top: 12rpx; font-size: 28rpx; }
+.market-info .item-copy { font-size: 22rpx; }
+.market-meta { justify-content: flex-start; gap: 16rpx; margin-top: 12rpx; }
+.price { color: #a36035; font-size: 29rpx; font-weight: 700; }
+.location { display: block; margin-top: 8rpx; color: #9a9387; font-size: 20rpx; }
+.primary-action { display: block; width: 100%; height: 58rpx; line-height: 58rpx; margin-top: 15rpx; color: #fff; background: #1d6b57; }
+.route-box { display: flex; align-items: center; justify-content: space-between; margin-top: 18rpx; padding: 16rpx 18rpx; border-radius: 10rpx; background: #f0eee6; }
+.route-point { flex: 1; color: #53645a; font-size: 23rpx; line-height: 1.45; }
+.route-mark { margin-left: 12rpx; color: #a49a8b; font-size: 16rpx; letter-spacing: 2rpx; }
+.errand-meta { padding-bottom: 16rpx; border-bottom: 1rpx solid #eee8de; }
+.club-card { display: flex; padding: 22rpx; }
+.club-emblem { flex: 0 0 104rpx; width: 104rpx; height: 104rpx; margin-right: 18rpx; border-radius: 50%; color: #fff; background: #6b698b; text-align: center; line-height: 104rpx; font-size: 42rpx; overflow: hidden; }
+.club-emblem image { width: 100%; height: 100%; }
+.club-content { flex: 1; min-width: 0; }
+.club-content .item-title { margin-top: 11rpx; font-size: 28rpx; }
+.club-content .item-copy { font-size: 22rpx; }
+.club-meta { margin-top: 12rpx; }
+.locked-note { display: block; margin-top: 16rpx; color: #a49a8b; font-size: 21rpx; line-height: 1.45; }
+.empty-state { display: flex; flex-direction: column; align-items: center; padding: 88rpx 20rpx; border: 1rpx dashed #dcd4c7; border-radius: 15rpx; color: #8f9389; background: rgba(251,250,247,.6); }
+.empty-mark { width: 66rpx; height: 66rpx; margin-bottom: 16rpx; border-radius: 50%; color: #1d6b57; background: #e4efe9; line-height: 59rpx; text-align: center; font-size: 38rpx; }
+.empty-title { color: #45534b; font-size: 26rpx; font-weight: 600; }
+.empty-copy, .loading-state { margin-top: 8rpx; color: #9b9c91; font-size: 22rpx; }
+.loading-state { padding: 22rpx; text-align: center; }

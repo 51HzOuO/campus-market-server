@@ -11,11 +11,6 @@ Page({
     loading: true
   },
 
-  onLoad() {
-    this.loadStats();
-    this.loadMessages();
-  },
-
   onShow() {
     this.loadStats();
     this.loadMessages();
@@ -29,7 +24,6 @@ Page({
       url: '/notice/list',
       method: 'GET',
       success: (res) => {
-        console.log('notice/list 响应:', res);
         if (res.statusCode === 200 && res.data && res.data.code === 200) {
           const messages = (res.data.data || []).map(item => {
             return {
@@ -41,15 +35,14 @@ Page({
               isRead: item.isRead === 1
             };
           });
-          this.setData({ messages: messages });
+          this.setData({ messages: messages, loading: false });
         } else {
-          console.log('notice/list 返回异常:', res.data);
-          this.setData({ messages: [] });
+          this.setData({ messages: [], loading: false });
         }
       },
       fail: (err) => {
-        console.log('notice/list 请求失败:', err);
-        this.setData({ messages: [] });
+        console.warn('notice/list 请求失败:', err && err.message);
+        this.setData({ messages: [], loading: false });
       },
       complete: () => {
         this.setData({ loading: false });
@@ -87,9 +80,14 @@ Page({
    */
   goPost(e) {
     const id = e.currentTarget.dataset.id;
-    if (id) {
-      wx.navigateTo({ url: '/pages/detail/detail?id=' + id });
+    if (!id) {
+      wx.showToast({ title: '这条通知没有关联帖子', icon: 'none' });
+      return;
     }
+    wx.navigateTo({
+      url: '/pages/detail/detail?id=' + encodeURIComponent(id),
+      fail: () => wx.showToast({ title: '打开帖子失败，请返回重试', icon: 'none' })
+    });
   },
 
   /**

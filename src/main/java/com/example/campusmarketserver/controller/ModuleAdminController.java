@@ -35,9 +35,21 @@ public class ModuleAdminController {
         if (!isAdmin()) return Result.error(403, "无权限");
         List<Map<String, Object>> result = new ArrayList<>();
         switch (normalize(type)) {
-            case "errand": errandOrderService.list(new LambdaQueryWrapper<ErrandOrder>().orderByDesc(ErrandOrder::getCreateTime)).forEach(x -> result.add(item(x.getId(), "errand", x.getTitle(), x.getStatus(), x.getAuditStatus()))); break;
-            case "market": secondHandItemService.list(new LambdaQueryWrapper<SecondHandItem>().orderByDesc(SecondHandItem::getCreateTime)).forEach(x -> result.add(item(x.getId(), "market", x.getTitle(), x.getStatus(), x.getAuditStatus()))); break;
-            case "club": clubService.list(new LambdaQueryWrapper<Club>().orderByDesc(Club::getCreateTime)).forEach(x -> result.add(item(x.getId(), "club", x.getName(), x.getStatus(), null))); break;
+            case "errand": errandOrderService.list(new LambdaQueryWrapper<ErrandOrder>().orderByDesc(ErrandOrder::getCreateTime)).forEach(x -> {
+                Map<String, Object> row = item(x.getId(), "errand", x.getTitle(), x.getStatus(), x.getAuditStatus());
+                row.put("description", x.getDescription()); row.put("route", safe(x.getPickupLocation()) + " → " + safe(x.getDeliveryLocation()));
+                row.put("price", x.getPrice()); row.put("urgent", x.getUrgent()); row.put("createTime", x.getCreateTime()); result.add(row);
+            }); break;
+            case "market": secondHandItemService.list(new LambdaQueryWrapper<SecondHandItem>().orderByDesc(SecondHandItem::getCreateTime)).forEach(x -> {
+                Map<String, Object> row = item(x.getId(), "market", x.getTitle(), x.getStatus(), x.getAuditStatus());
+                row.put("description", x.getDescription()); row.put("category", x.getCategory()); row.put("price", x.getPrice());
+                row.put("location", x.getLocation()); row.put("images", x.getImages()); row.put("createTime", x.getCreateTime()); result.add(row);
+            }); break;
+            case "club": clubService.list(new LambdaQueryWrapper<Club>().orderByDesc(Club::getCreateTime)).forEach(x -> {
+                Map<String, Object> row = item(x.getId(), "club", x.getName(), x.getStatus(), null);
+                row.put("description", x.getDescription()); row.put("memberCount", x.getMemberCount()); row.put("logo", x.getLogo());
+                row.put("createTime", x.getCreateTime()); result.add(row);
+            }); break;
             case "activity": clubActivityService.list(new LambdaQueryWrapper<ClubActivity>().orderByDesc(ClubActivity::getCreateTime)).forEach(x -> result.add(item(x.getId(), "activity", x.getTitle(), x.getStatus(), null))); break;
             default: return Result.error(400, "未知业务类型");
         }
@@ -66,5 +78,6 @@ public class ModuleAdminController {
     private static String normalize(String type) { if (type == null) return ""; String v = type.trim().toLowerCase(); return ("second-hand".equals(v) || "secondhand".equals(v) || "item".equals(v)) ? "market" : v; }
     private static Long longValue(Object v) { try { return v == null ? null : Long.valueOf(String.valueOf(v)); } catch (Exception e) { return null; } }
     private static Integer intValue(Object v) { try { return v == null ? null : Integer.valueOf(String.valueOf(v)); } catch (Exception e) { return null; } }
+    private static String safe(String value) { return value == null || value.isBlank() ? "未填写" : value; }
     private static Map<String,Object> item(Long id, String type, String title, Integer status, Integer auditStatus) { Map<String,Object> m = new HashMap<>(); m.put("id", id); m.put("type", type); m.put("title", title); m.put("status", status); m.put("auditStatus", auditStatus); return m; }
 }

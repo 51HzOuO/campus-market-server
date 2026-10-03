@@ -1,12 +1,67 @@
-<view class="page">
-  <view class="header"><view class="back" bindtap="goBack">‹</view><view><text class="eyebrow">{{types[typeIndex]}} · ADMIN</text><text class="header-title">{{types[typeIndex]}}管理</text></view><view class="header-mark">◆</view></view>
-  <view class="intro">当前仅展示{{types[typeIndex]}}，可快速调整内容的展示状态。</view>
-  <picker wx:if="{{!standalone}}" mode="selector" range="{{types}}" value="{{typeIndex}}" bindchange="changeType"><view class="picker"><text class="picker-label">当前模块</text><text class="picker-value">{{types[typeIndex]}}</text><text class="picker-arrow">⌄</text></view></picker>
-  <view class="card" wx:for="{{items}}" wx:key="id">
-    <view class="card-top"><text class="type-chip">{{types[typeIndex]}}</text><text class="status {{item.status === 0 || item.status === 3 || item.status === 6 ? 'offline' : 'online'}}">{{item.status === 0 || item.status === 3 || item.status === 6 ? '已下架' : '展示中'}}</text></view>
-    <text class="title">{{item.title || item.name || '未命名内容'}}</text>
-    <text class="summary">{{item.description || item.content || item.nickname || '暂无补充说明'}}</text>
-    <view class="card-foot"><text class="record-id">记录 #{{item.id}}</text><button wx:if="{{typeValues[typeIndex] !== 'post'}}" class="action" size="mini" data-item="{{item}}" bindtap="toggle">{{item.status === 0 || item.status === 3 || item.status === 6 ? '恢复展示' : '下架内容'}}</button><view wx:else class="post-actions"><button class="action" size="mini" data-item="{{item}}" bindtap="toggle">{{item.isTop === 1 ? '取消置顶' : '置顶'}}</button><button class="action danger-action" size="mini" data-id="{{item.id}}" bindtap="deletePost">删除</button></view></view>
+<view class="page module-{{typeValues[typeIndex]}}">
+  <view class="hero">
+    <view class="hero-nav">
+      <view class="back-button" bindtap="goBack">‹</view>
+      <text class="hero-caption">CAMPUS MARKET / ADMIN</text>
+      <text class="hero-count">{{items.length}} 条</text>
+    </view>
+    <text class="hero-title">{{types[typeIndex]}}管理</text>
+    <text class="hero-subtitle">{{typeValues[typeIndex] === 'post' ? '整理社区内容，让优质分享持续被看见' : typeValues[typeIndex] === 'market' ? '维护商品状态，保持校园交易信息清晰' : typeValues[typeIndex] === 'errand' ? '查看需求进度，维护校园互助秩序' : '管理社团信息，呈现有活力的校园组织'}}</text>
+    <view class="hero-accent"></view>
   </view>
-  <view class="empty" wx:if="{{!loading && items.length === 0}}">暂无内容</view>
+
+  <view class="module-switch" wx:if="{{!standalone}}">
+    <view wx:for="{{types}}" wx:key="index" class="switch-item {{typeIndex === index ? 'active' : ''}}" data-index="{{index}}" bindtap="changeType">{{item}}</view>
+  </view>
+
+  <view class="list-heading"><text>{{types[typeIndex]}}列表</text><text wx:if="{{loading}}">正在更新</text></view>
+
+  <view class="post-card" wx:if="{{typeValues[typeIndex] === 'post'}}" wx:for="{{items}}" wx:for-item="post" wx:key="id">
+    <view class="post-card-top"><text class="item-index">POST / {{post.id}}</text><text class="state-pill {{post.isTop === 1 ? 'highlight' : ''}}">{{post.statusText}}</text></view>
+    <text class="item-title">{{post.title || '无标题帖子'}}</text>
+    <text class="item-copy">{{post.content || '没有正文内容'}}</text>
+    <view class="item-meta"><text>{{post.nickname || '匿名用户'}}</text><text>{{post.createTimeStr || '校园动态'}}</text></view>
+    <view class="item-actions"><button class="secondary-action" size="mini" data-item="{{post}}" bindtap="toggle">{{post.actionText}}</button><button class="danger-action" size="mini" data-id="{{post.id}}" bindtap="deletePost">删除帖子</button></view>
+  </view>
+
+  <view class="market-card" wx:if="{{typeValues[typeIndex] === 'market'}}" wx:for="{{items}}" wx:for-item="item" wx:key="id">
+    <image wx:if="{{item.cover}}" class="market-cover" src="{{item.cover}}" mode="aspectFill"></image>
+    <view wx:else class="market-cover cover-empty"><text>闲置好物</text><text>SECOND HAND</text></view>
+    <view class="market-info">
+      <view class="card-top"><text class="item-index">商品 / {{item.id}}</text><text class="state-pill">{{item.statusText}}</text></view>
+      <text class="item-title">{{item.title || '未命名商品'}}</text>
+      <text class="item-copy">{{item.description || '暂无商品描述'}}</text>
+      <view class="market-meta"><text class="price">¥{{item.price || '0.00'}}</text><text>{{item.category || '其他分类'}}</text></view>
+      <text class="location" wx:if="{{item.location}}">{{item.location}}</text>
+      <button wx:if="{{item.canToggle}}" class="primary-action" size="mini" data-item="{{item}}" bindtap="toggle">{{item.actionText}}</button>
+      <text wx:else class="locked-note">需审核通过后才能调整展示状态</text>
+    </view>
+  </view>
+
+  <view class="errand-card" wx:if="{{typeValues[typeIndex] === 'errand'}}" wx:for="{{items}}" wx:for-item="item" wx:key="id">
+    <view class="card-top"><text class="item-index">互助需求 / {{item.id}}</text><text class="state-pill">{{item.statusText}}</text></view>
+    <text class="item-title">{{item.title || '未命名需求'}}</text>
+    <text class="item-copy">{{item.description || '暂无需求说明'}}</text>
+    <view class="route-box"><text class="route-point">{{item.route}}</text><text class="route-mark">ROUTE</text></view>
+    <view class="errand-meta"><text>{{item.urgent === 1 ? '加急需求' : '普通需求'}}</text><text class="price">¥{{item.price || '0.00'}}</text></view>
+    <button wx:if="{{item.canToggle}}" class="primary-action" size="mini" data-item="{{item}}" bindtap="toggle">{{item.actionText}}</button>
+    <text wx:else class="locked-note">仅审核通过且未完成的订单可调整</text>
+  </view>
+
+  <view class="club-card" wx:if="{{typeValues[typeIndex] === 'club'}}" wx:for="{{items}}" wx:for-item="club" wx:key="id">
+    <view class="club-emblem"><image wx:if="{{club.logo}}" src="{{club.logo}}" mode="aspectFill"></image><text wx:else>社</text></view>
+    <view class="club-content">
+      <view class="card-top"><text class="item-index">CAMPUS CLUB / {{club.id}}</text><text class="state-pill">{{club.statusText}}</text></view>
+      <text class="item-title">{{club.title || '未命名社团'}}</text>
+      <text class="item-copy">{{club.description || '暂无社团简介'}}</text>
+      <view class="club-meta"><text>{{club.memberCount || 0}} 位成员</text><text>{{club.createTime || ''}}</text></view>
+      <button wx:if="{{club.canToggle}}" class="primary-action" size="mini" data-item="{{club}}" bindtap="toggle">{{club.actionText}}</button>
+      <text wx:else class="locked-note">待审核或已驳回内容请在审核管理中处理</text>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:if="{{!loading && items.length === 0}}">
+    <view class="empty-mark">—</view><text class="empty-title">这里暂时空着</text><text class="empty-copy">当前模块还没有可管理的内容</text>
+  </view>
+  <view class="loading-state" wx:if="{{loading}}">正在整理内容…</view>
 </view>

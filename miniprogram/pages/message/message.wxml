@@ -11,7 +11,7 @@
   <view class="msg-section">
     <view class="section-title">消息通知</view>
     <view class="msg-list" wx:if="{{messages.length > 0}}">
-      <view class="msg-item" wx:for="{{messages}}" wx:key="id" bindtap="goPost" data-id="{{item.postId}}">
+      <view class="msg-item" wx:for="{{messages}}" wx:key="id" hover-class="msg-item-hover" bindtap="goPost" data-id="{{item.postId}}">
         <image class="msg-avatar" src="{{item.avatar || '/images/default-avatar.png'}}" mode="aspectFill"/>
         <view class="msg-content">
           <text class="msg-text">{{item.text}}</text>

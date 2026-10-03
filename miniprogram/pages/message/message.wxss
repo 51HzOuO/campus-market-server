@@ -58,6 +58,8 @@
   border-bottom: none;
 }
 
+.msg-item-hover { background: #f1eee7; }
+
 .msg-avatar {
   width: 80rpx;
   height: 80rpx;
