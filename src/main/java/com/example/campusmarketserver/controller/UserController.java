@@ -204,24 +204,6 @@ public class UserController {
     }
 
     /**
-     * 临时接口：把当前用户设为管理员（仅初始化用）
-     */
-    @PostMapping("/become-admin")
-    public Result<String> becomeAdmin() {
-        Long userId = UserContext.getUserId();
-        if (userId == null) {
-            return Result.error(401, "未登录");
-        }
-
-        User user = new User();
-        user.setId(userId);
-        user.setRole(1); // 1=管理员
-        userService.updateById(user);
-
-        return Result.success("已成为管理员");
-    }
-
-    /**
      * 管理员接口：获取所有用户列表
      */
     @GetMapping("/admin/list")
